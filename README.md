@@ -2,6 +2,10 @@
 
 This is a MediaWiki extension that integrates the draw.io flow chart editor and allows inline editing of charts.
 
+# LMP>
+ Code Editor Uses DrawIO; https://desk.draw.io/support/solutions/articles/16000042544-embed-mode
+ Extension plan to add VisualEditor extension for editing
+
 # Warnings
 **Please read these warnings carefully before use**:
 - The actual editor functionality is loaded from draw.io. This code only provides integration.
