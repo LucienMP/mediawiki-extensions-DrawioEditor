@@ -1,4 +1,30 @@
 {
-	"@metadata": {},
-	"drawioeditor-desc": "draw.io flow chart creation and inline editing"
+	"@metadata": {
+		"authors": [
+			"Lucien Murray-Pitts"
+		]
+	},
+    "drawioeditor-desc": "draw.io flow chart creation and inline editing",
+    
+	"visualeditor-mwdrawio-tool": "DrawIO Tool",
+
+	"visualeditor-mwdrawiodialog-title": "DrawIO Visual Editor",
+	"visualeditor-mwdrawiodialog-align": "Alignment",
+	"visualeditor-mwdrawiodialog-wavejson": "SomeTextBox",
+	"visualeditor-mwdrawiodialog-size": "Size",
+
+	"visualeditor-mwdrawiodialog-position-button": "Some Pulldown Menu",
+	"visualeditor-mwdrawiodialog-reset-map" : "Unused Button",
+
+	"visualeditor-mwdrawio-style-title": "Style Type",
+	"visualeditor-mwdrawio-style-title-help": "This selects the style used to render your waveform or schematic",
+	"visualeditor-mwdrawio-pulldownA": "Option A; default",
+	"visualeditor-mwdrawio-pulldownB": "Option B; ...",
+	"visualeditor-mwdrawio-pulldownC": "Option C; ...",
+
+
+	"visualeditor-mwdrawiocontextitem-nosupport": "This map contains dynamic features, and for now can only be edited in source mode.",
+	"visualeditor-mwdrawiocontextitem-title": "DrawIO Edit"
+
+
 }

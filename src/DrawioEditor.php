@@ -92,6 +92,7 @@ class DrawioEditor {
 		if ( $img ) {
 			$historyLine = $img->nextHistoryLine();
 			$img_url = $img->getViewUrl();
+			// FIXME: LMP: Notice: Undefined property: stdClass::$img_timestamp in /home/lucienmp/Wiki/KekWiki/mediawiki-1.35.0/extensions/DrawioEditor/src/DrawioEditor.php on line 95
 			$img_url_ts = $img_url . '?ts=' . ( $historyLine !== false ? $historyLine->img_timestamp : '' );
 			$img_desc_url = $img->getDescriptionUrl();
 			$img_height = $img->getHeight() . 'px';

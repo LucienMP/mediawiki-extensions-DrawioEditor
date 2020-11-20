@@ -14,9 +14,7 @@
 		"DrawioEditorMagic": "DrawioEditor.magic.php"
 	},
 	"MessagesDirs": {
-		"DrawioEditor": [
-			"i18n"
-		]
+		"DrawioEditor": ["i18n"]
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\Extension\\DrawioEditor\\": "src/"
@@ -29,12 +27,73 @@
 				"jquery.ui",
 				"mediawiki.api"
 			]
+        },
+
+		"ext.drawio.visualEditor": {
+			"scripts": [
+				"modules/ve/ve.dm.MWDrawIONode.js",
+                "modules/ve/ve.dm.MWDrawIOTransclusionNode2.js",
+				"modules/ve/ve.dm.MWDrawIOInlineNode.js",
+				"modules/ve/ve.ce.MWDrawIONode.js",
+				"modules/ve/ve.ui.MWDrawIODialogTool.js",
+				"modules/ve/ve.ui.MWDrawIODialog.js",
+				"modules/ve/ve.ui.MWDrawIOContextItem.js"
+			],
+            "styles": [
+                "modules/ve/ve.ui.MWDrawIO.css"
+            ],
+			"dependencies": [
+				"jquery.throttle-debounce",
+                "ext.visualEditor.mwcore",
+
+                "ext.visualEditor.mediawiki",
+                "ext.visualEditor.desktopTarget",
+                "ext.visualEditor.mwextensions.desktop",
+                "ext.visualEditor.core.desktop",
+
+				"oojs-ui.styles.icons-content",
+				"oojs-ui.styles.icons-location",
+				"mediawiki.api"
+			],
+			"messages": [
+				"visualeditor-mwdrawio-tool",
+				"visualeditor-mwdrawiodialog-align",
+				"visualeditor-mwdrawiodialog-wavejson",
+				"visualeditor-mwdrawiodialog-size",
+				"visualeditor-mwdrawiodialog-title",
+				"visualeditor-mwdrawiocontextitem-title",
+				"visualeditor-mwdrawiocontextitem-nosupport",
+
+				"visualeditor-mwdrawiodialog-position-button",
+                "visualeditor-mwdrawiodialog-reset-map",
+                
+                "visualeditor-mwdrawio-style-title",
+                "visualeditor-mwdrawio-style-title-help",
+				"visualeditor-mwdrawio-pulldownA",
+				"visualeditor-mwdrawio-pulldownB",
+				"visualeditor-mwdrawio-pulldownC"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
+			]
 		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "resources",
 		"remoteExtPath": "DrawioEditor/resources"
 	},
+
+	"VisualEditorPluginModules": ["ext.drawio.visualEditor"],   
+    
+	"attributes": {
+		"VisualEditor": {
+			"PluginModules": [
+				"ext.drawio.visualEditor"
+			]
+		}
+	},
+
 	"Hooks": {
 		"OutputPageParserOutput": "MediaWiki\\Extension\\DrawioEditor\\Hook\\OutputPageParserOutput\\AddModules::callback",
 		"ParserFirstCallInit": "MediaWiki\\Extension\\DrawioEditor\\Hook\\ParserFirstCallInit\\SetFunctionHook::callback"
