@@ -8,6 +8,29 @@ This is a MediaWiki extension that integrates the draw.io flow chart editor and 
   * API; https://doc.wikimedia.org/VisualEditor/master/
  Extension plan to add VisualEditor extension for editing  
 
+READING MATERIAL  
+* Original DrawIO manual;  https://www.mediawiki.org/wiki/Extension:DrawioEditor
+* See issues for what needs doing/badly broke;  https://github.com/LucienMP/mediawiki-extensions-DrawioEditor/issues
+
+Manifest extension.json information  
+* Manifest 2 changes;  https://www.mediawiki.org/wiki/Manual:Extension.json/Schema#Changes_in_manifest_version_2
+* Manifset 2 changes for extensions; https://www.mediawiki.org/wiki/Manual:Extension_registration#Configs_(Your_extension/skins_settings)
+
+
+Mediawiki Extensions  
+* Extension Types; https://www.mediawiki.org/wiki/Manual:Extensions
+** Parser funcitons {{#parserFuncitonName:xxx|ttt|tttt}}; https://www.mediawiki.org/wiki/Manual:Parser_functions
+** Tag extensions <tagName attrA=1 attrB=2>; https://www.mediawiki.org/wiki/Manual:Tag_extensions
+
+Debugging  
+* Visual Editor Debugging hints;  https://www.mediawiki.org/wiki/VisualEditor/Developers/Getting_started#Debugging
+** Add &debug=1 to URL before hitting edit button
+
+
+
+
+
+
 # Warnings
 **Please read these warnings carefully before use**:
 - The actual editor functionality is loaded from draw.io. This code only provides integration.
