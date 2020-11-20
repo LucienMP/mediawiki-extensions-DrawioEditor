@@ -3,10 +3,10 @@
 This is a MediaWiki extension that integrates the draw.io flow chart editor and allows inline editing of charts.
 
 # LMP>
- Code Editor Uses DrawIO messages; https://desk.draw.io/support/solutions/articles/16000042544-embed-mode  
- Visual Editor Development; https://www.mediawiki.org/wiki/VisualEditor#Developer_documentation  
+ * Code Editor Uses DrawIO messages; https://desk.draw.io/support/solutions/articles/16000042544-embed-mode  
+ * Visual Editor Development; https://www.mediawiki.org/wiki/VisualEditor#Developer_documentation  
   * API; https://doc.wikimedia.org/VisualEditor/master/
- Extension plan to add VisualEditor extension for editing  
+  * Extension plan to add VisualEditor extension for editing  
 
 READING MATERIAL  
 * Original DrawIO manual;  https://www.mediawiki.org/wiki/Extension:DrawioEditor
@@ -19,12 +19,12 @@ Manifest extension.json information
 
 Mediawiki Extensions  
 * Extension Types; https://www.mediawiki.org/wiki/Manual:Extensions
-** Parser funcitons {{#parserFuncitonName:xxx|ttt|tttt}}; https://www.mediawiki.org/wiki/Manual:Parser_functions
-** Tag extensions <tagName attrA=1 attrB=2>; https://www.mediawiki.org/wiki/Manual:Tag_extensions
+* Parser funcitons {{#parserFuncitonName:xxx|ttt|tttt}}; https://www.mediawiki.org/wiki/Manual:Parser_functions
+* Tag extensions <tagName attrA=1 attrB=2>; https://www.mediawiki.org/wiki/Manual:Tag_extensions
 
 Debugging  
 * Visual Editor Debugging hints;  https://www.mediawiki.org/wiki/VisualEditor/Developers/Getting_started#Debugging
-** Add &debug=1 to URL before hitting edit button
+* Add &debug=1 to URL before hitting edit button
 
 
 
