@@ -45,13 +45,21 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
     this.iframeOverlay = $("#drawio-iframe-overlay-" + id);
     this.iframeOverlay.hide();
  
-    this.iframe = $('<iframe>', {
-        src: 'https://embed.diagrams.net/?embed=1&proto=json&spin=1&analytics=0&db=0&gapi=0&od=0&picker=0',
-	id: 'drawio-iframe-' + id,
-	class: 'DrawioEditorIframe'
-    })
-    this.iframe.appendTo(this.iframeBox);
-    
+    /* FIXME:LMP This code depends on the iframe being EDIT link, or VE editor */
+    isEDITLinkVersion=false;
+
+    if( isEDITLinkVersion ) {
+        this.iframe = $('<iframe>', {
+            src: 'https://embed.diagrams.net/?embed=1&proto=json&spin=1&analytics=0&db=0&gapi=0&od=0&picker=0',
+        id: 'drawio-iframe-' + id,
+        class: 'DrawioEditorIframe'
+        })
+        this.iframe.appendTo(this.iframeBox);
+    } else {
+        // VE version has a div with id=DrawIOContainer
+        this.iframe = $("#DrawIOContainer");
+    }   
+
     this.iframeWindow = this.iframe.prop('contentWindow');
 
     this.show();
