@@ -53,12 +53,12 @@ ve.dm.MWDrawIOTransclusionNode2.static.toDataElement = function ( domElements ) 
     debugger;
 
 	var dataElement,
-		cxDataJSON = domElements[ 0 ].getAttribute( 'data-cx' ),
-		cxData = cxDataJSON ? JSON.parse( cxDataJSON ) : {};
+		mwDataJSON = domElements[ 0 ].getAttribute( 'data-mw' ),
+		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {};
 
 	// Parent method
 	dataElement = ve.dm.MWDrawIOTransclusionNode2.super.static.toDataElement.apply( this, arguments );
-    dataElement.attributes.cx = cxData;
+    dataElement.attributes.cx = mwData;
 
     // FIXME: LMP>  Used by ve.ce.ResizableNode.getAttributeChanges
     dataElement.attributes.width = 200;
@@ -87,11 +87,15 @@ ve.dm.MWDrawIOTransclusionNode2.static.toDomElements = function ( dataElement ) 
 
 // FIXME:HACK > Added because the regular node needs it
 ve.dm.MWDrawIOTransclusionNode2.prototype.getCurrentDimensions = function () {
+    var _params=this.getAttribute( 'mw' ).parts[0].template.params;
+    var _width = _params.width;
+    var _height = _params.height;
+    if (typeof _width === 'undefined') _width="200" ; else _width=_width.wt;
+    if (typeof _height === 'undefined') _height="200" ; else _height = _height.wt;
+
 	return {
-		width: 100,
-		height: 100
-//		width: +this.getAttribute( 'mw' ).attrs.width,
-//		height: +this.getAttribute( 'mw' ).attrs.height
+		width: +_width,
+		height: +_height
 	};
 };
 

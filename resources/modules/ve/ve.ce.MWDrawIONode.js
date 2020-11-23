@@ -315,7 +315,7 @@ ve.ce.MWDrawIONode.prototype.onResizableResizing = function () {
 	// Mixin method
 	ve.ce.ResizableNode.prototype.onResizableResizing.apply( this, arguments );
 
-	if ( !this.requiresInteractive() ) {
+	if ( false ) { //FIXME:LMP:  Removed> !this.requiresInteractive() ) {
 		this.updateStatic( 1000, 1000 );
 	} else if ( true /*this.map*/ ) {
 
@@ -323,9 +323,9 @@ ve.ce.MWDrawIONode.prototype.onResizableResizing = function () {
 
 		// LMP-FIXME : this.map.invalidateSize();
 		// Resize SVG
-	    //var width = this.$element[0].querySelector( 'svg').width ;
-		//this.$element[0].querySelector( 'svg').setAttribute('width', arguments[ 0 ].width );
-		//this.$element[0].querySelector( 'svg').setAttribute('height', arguments[ 0 ].height );
+	    var drawioContainer = this.$element[0].querySelector( '.drawio-scaled-container');
+		drawioContainer.setAttribute('width', arguments[ 0 ].width );
+		drawioContainer.setAttribute('height', arguments[ 0 ].height );
 	}
 };
 
