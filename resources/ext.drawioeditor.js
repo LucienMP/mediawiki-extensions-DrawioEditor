@@ -289,6 +289,9 @@ DrawioEditor.prototype.initCallback = function () {
 var editor;
 
 window.editDrawio = function(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth) {
+    //FIXME: Added only on edit
+    window.addEventListener('message', drawioHandleMessage);
+
     if (!editor) {
         editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
     } else {
@@ -297,6 +300,8 @@ window.editDrawio = function(id, filename, type, interactive, updateHeight, upda
 };
 
 function drawioHandleMessage(e) {
+    debugger;
+
     // we only act on event coming from draw.io iframes
     if (e.origin != 'https://embed.diagrams.net')
         return;
@@ -332,4 +337,4 @@ function drawioHandleMessage(e) {
     }
 };
 
-window.addEventListener('message', drawioHandleMessage);
+//FIXME: LMP; moved to editDrawio; window.addEventListener('message', drawioHandleMessage);
