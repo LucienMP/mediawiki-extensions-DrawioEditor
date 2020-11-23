@@ -156,7 +156,8 @@ ve.ce.MWDrawIONode.prototype.update = function () {
 		}
 		this.updateStatic();
 		$( '<img>' ).attr( 'src', this.model.getUrl( 1000, 1000 ) );
-	}
+    }
+    debugger;
 	this.$element
 		.removeClass( 'tleft tright tnone' )
 //		.removeClass( 'mw-halign-none mw-halign-left mw-halign-center mw-halign-right' )
@@ -171,7 +172,8 @@ ve.ce.MWDrawIONode.prototype.update = function () {
 ve.ce.MWDrawIONode.prototype.setupMap = function () {
 	var mwData = this.model.getAttribute( 'mw' ),
 		mwAttrs = mwData && mwData.attrs,
-		node = this;
+        node = this;
+        debugger;
 /*
 	this.map = mw.loader.require( 'ext.kartographer.box' ).map( {
 		container: this.$element[ 0 ],
@@ -343,6 +345,7 @@ ve.ce.MWDrawIONode.prototype.getAttributeChanges = function ( width, height ) {
     console.log( height);
     console.log( mwData );
     console.log( mwData.attrs ); // FIXME: attrs is underfined, why?
+    console.log( mwData.parts[0] ); // FIXME: attrs is underfined, why?
 
     console.log("END VeCeMWDrawIONode.getAttributeChanges #################################################"  );
 
@@ -350,10 +353,13 @@ ve.ce.MWDrawIONode.prototype.getAttributeChanges = function ( width, height ) {
     debugger;
 	// mwData.attrs.width = width.toString();
 	// mwData.attrs.height = height.toString();
-    mwData.parts[0].width = width.toString();
-    mwData.parts[0].height = height.toString();
+    mwData.parts[0].template.params.width = width.toString();
+    mwData.parts[0].template.params.height = height.toString();
 
-
+    // FIXME:LMP: PARSOID ERROR
+    // should be mwData.parts[0].template.params.width.wt = width.toString();
+    // should be mwData.parts[0].template.params.height.wt = height.toString();
+    
 	return { mw: mwData };
 };
 
