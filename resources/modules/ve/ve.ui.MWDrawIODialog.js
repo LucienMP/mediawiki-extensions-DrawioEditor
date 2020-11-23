@@ -49,10 +49,13 @@ ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve
 // ########################################################################################################################
 // ########################################################################################################################
 
-ve.ui.MWDrawIODialog.prototype.drawioHandleMessage = function (e) {
+ve.ui.MWDrawIODialog.prototype.drawioHandleMessage = function (eJqueryEvent) {
     console.log("drawioHandleMessage");
 
     debugger;
+
+    // FIXME:LMP:Extract original event from jquery wrapper
+    e = eJqueryEvent.originalEvent;
 
     // we only act on event coming from draw.io iframes
     if (e.origin != 'https://embed.diagrams.net')
@@ -241,12 +244,15 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
     // FIXME: ====================================================================================================================
     debugger;
 
-    var id=0, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    // id=random
+    var id=775430669, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
 
 
     // window.addEventListener('message', drawioHandleMessage);  
-    $(window).on("message", this.drawioHandleMessage );
+    //$(window).on("message", this.drawioHandleMessage );
+    that=this;
+    $(window).on("message", function(e) {  that.drawioHandleMessage(e);  }  );
 
 
     /* ******************************* SART OF LAYOUT ******************************* */
