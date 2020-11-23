@@ -185,14 +185,14 @@ ve.ce.MWDrawIONode.prototype.setupMap = function () {
 
   // Container that allows for DrawIO Scaling to certain size
   var scaledcontainer2 = $( '<div>' ) ;
-	scaledcontainer2.addClass('wavdrom-scaled-container');
+	scaledcontainer2.addClass('drawio-scaled-container');
 	scaledcontainer2.appendTo( this.$element[ 0 ] ) ;
 	scaledcontainer2.css({'height':'100%', 'width': '100%'});
 
-	// Add DrawIO JSON to container
-	// eg. { signal: [ { name: "clk",  wave: "p......" }, { name: "bus",  wave: "x.34.5x",   data: "head body tail" },  { name: "wire", wave: "0.1..0." },]}
-	this.$wavedromdiv=$( '<script type=WaveDrom id="InputJSON_9998">' );
-	this.$wavedromdiv.text(geoJson);
+    // Add DrawIO to VE container
+    // FIXME:LMP: This is hardcoded to my example ChartName5.drawio.png as an example
+    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="/mediawiki-1.35.0/images/2/21/ChartName5.drawio.png?ts=20201123073750" title="drawio: ChartName5" alt="drawio: ChartName5" style="height: auto; width: 100%; max-width: 371px;"></img>' );
+    
 	this.$wavedromdiv.appendTo( scaledcontainer2 ) ;
 	$( '<div id=WaveDrom_Display_9998>' ).appendTo( scaledcontainer2 ); // LMP-FIXME: Needs to be something more concrete, there could be 9998 waves on a page
 
