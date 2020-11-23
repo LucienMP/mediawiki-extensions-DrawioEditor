@@ -44,6 +44,52 @@ ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve
 
 /* Methods */
 
+// ########################################################################################################################
+// ########################################################################################################################
+// ########################################################################################################################
+// ########################################################################################################################
+
+ve.ui.MWDrawIODialog.prototype.drawioHandleMessage = function (e) {
+    console.log("drawioHandleMessage");
+
+    debugger;
+
+    // we only act on event coming from draw.io iframes
+    if (e.origin != 'https://embed.diagrams.net')
+        return;
+    
+    if (!this.editor)
+        return;
+       
+    evdata = JSON.parse(e.data);
+
+    switch(evdata['event']) {
+        case 'init':
+            this.editor.initCallback();
+            break;
+
+        case 'load':
+            break;
+
+        case 'save':
+            this.editor.saveCallback();
+            break;
+
+        case 'export':
+            this.editor.exportCallback(evdata['format'], evdata['data']);
+            break;
+
+        case 'exit':
+            this.editor.exitCallback();
+	    // editor is null after this callback
+            break;
+
+        default:
+            alert('Received unknown event from drawio iframe: ' + evdata['event']);
+    }
+};
+
+
 /**
  * @inheritdoc
  */
@@ -191,6 +237,16 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 	} );
 	panel.$element.append(
     );
+
+    // FIXME: ====================================================================================================================
+    debugger;
+
+    var id=0, filename="Chart6", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
+
+
+    // window.addEventListener('message', drawioHandleMessage);  
+    $(window).on("message", this.drawioHandleMessage );
 
 
     /* ******************************* SART OF LAYOUT ******************************* */
