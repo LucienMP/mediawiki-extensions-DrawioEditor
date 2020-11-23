@@ -85,8 +85,10 @@ class DrawioEditor {
 		$name = wfStripIllegalFilenameChars( $name );
 		$dispname = htmlspecialchars( $name, ENT_QUOTES );
 
-		/* random id to reference html elements */
-		$id = mt_rand();
+        /* random id to reference html elements */
+        //FIXME:LMP Boxes get rand ids, for now make it constant, this needs fixing in ve.X classes
+        // $id = mt_rand();
+		$id = 775430669;
 
 		/* prepare image information */
         $img_name = $name . ".drawio." . $opt_type;
