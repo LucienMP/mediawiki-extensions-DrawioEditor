@@ -241,7 +241,7 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
     // FIXME: ====================================================================================================================
     debugger;
 
-    var id=0, filename="Chart6", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    var id=0, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
 
 
