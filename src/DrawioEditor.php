@@ -31,6 +31,8 @@ class DrawioEditor {
 	 * @return array
 	 */
 	public function parse( &$parser, $name = null ) {
+        wfDebugLog( 'DRAWIO', "Enter parse for:".$name ) ;
+
 		/* disable caching before any output is generated */
 		$parser->getOutput()->updateCacheExpiry( 0 );
 
@@ -87,13 +89,70 @@ class DrawioEditor {
 		$id = mt_rand();
 
 		/* prepare image information */
-		$img_name = $name . ".drawio." . $opt_type;
-		$img = $this->services->getRepoGroup()->findFile( $img_name );
+        $img_name = $name . ".drawio." . $opt_type;
+        
+        $img = $this->services->getRepoGroup()->findFile( $img_name );       
 		if ( $img ) {
+            // FIXME: LMP: Not sure why this is needed, mayve findFile is caching stomething;
+            // REF; https://doc.wikimedia.org/mediawiki-core/REL1_35/php/LocalFile_8php_source.html#l01332
+            // REF; https://github.com/LucienMP/mediawiki-extensions-DrawioEditor
+            
+            $img->resetHistory();
+
 			$historyLine = $img->nextHistoryLine();
-			$img_url = $img->getViewUrl();
-			// FIXME: LMP: Notice: Undefined property: stdClass::$img_timestamp in /home/lucienmp/Wiki/KekWiki/mediawiki-1.35.0/extensions/DrawioEditor/src/DrawioEditor.php on line 95
-			$img_url_ts = $img_url . '?ts=' . ( $historyLine !== false ? $historyLine->img_timestamp : '' );
+            $img_url = $img->getViewUrl();
+            
+
+            /* FIXME* LMP: Something wrong with the history lookup, almost like its cached...
+            // FIXME: LMP: Notice: Undefined property: stdClass::$img_timestamp in /home/lucienmp/Wiki/KekWiki/mediawiki-1.35.0/extensions/DrawioEditor/src/DrawioEditor.php on line 95
+            wfDebugLog( 'DRAWIO', "crash about to happen..." ) ;
+            $somevar = var_export($historyLine, true);
+            wfDebugLog( 'DRAWIO', "CRASHY: " . $somevar ) ;
+
+    ** FIRST INVOCATION
+   'img_name' => 'ChartName5.drawio.png',
+   'img_size' => '7301',
+   'img_width' => '291',
+   'img_height' => '181',
+   'img_metadata' => 'a:6:{s:10:"frameCount";i:0;s:9:"loopCount";i:1;s:8:"duration";d:0;s:8:"bitDepth";i:8;s:9:"colorType";s:16:"truecolour-alpha";s:8:"metadata";a:1:{s:15:"_MW_PNG_VERSION";i:1;}}',
+   'img_bits' => '8',
+   'img_media_type' => 'BITMAP',
+   'img_major_mime' => 'image',
+   'img_minor_mime' => 'png',
+   'img_timestamp' => '20201114093744',
+   'img_sha1' => '0toqt5jhxniuzri0n59rymmxqdjy3bb',
+   'img_description_text' => '',
+   'img_description_data' => NULL,
+   'img_description_cid' => '1',
+   'img_user' => '2',
+   'img_user_text' => 'Lucienmp',
+   'img_actor' => '2',
+   'oi_archive_name' => '',
+   'oi_deleted' => '0',
+
+   ** SECOND INVOCATION
+   'oi_name' => 'ChartName5.drawio.png',
+   'oi_archive_name' => '20201114093743!ChartName5.drawio.png',
+   'oi_size' => '6640',
+   'oi_width' => '221',
+   'oi_height' => '221',
+   'oi_bits' => '8',
+   'oi_media_type' => 'BITMAP',
+   'oi_major_mime' => 'image',
+   'oi_minor_mime' => 'png',
+   'oi_timestamp' => '20201114065223',
+   'oi_deleted' => '0',
+   'oi_sha1' => 'fm6fmvus2auld02tmnv4tywm7lhnyts',
+   'oi_description_text' => '',
+   'oi_description_data' => NULL,
+   'oi_description_cid' => '1',
+   'oi_user' => '2',
+   'oi_user_text' => 'Lucienmp',
+   'oi_actor' => '2',
+   'oi_metadata' => 'a:6:{s:10:"frameCount";i:0;s:9:"loopCount";i:1;s:8:"duration";d:0;s:8:"bitDepth";i:8;s:9:"colorType";s:16:"truecolour-alpha";s:8:"metadata";a:1:{s:15:"_MW_PNG_VERSION";i:1;}}',
+            */
+
+            $img_url_ts = $img_url . '?ts=' . ( $historyLine !== false ? $historyLine->img_timestamp : '' );
 			$img_desc_url = $img->getDescriptionUrl();
 			$img_height = $img->getHeight() . 'px';
 			$img_width = $img->getWidth() . 'px';
