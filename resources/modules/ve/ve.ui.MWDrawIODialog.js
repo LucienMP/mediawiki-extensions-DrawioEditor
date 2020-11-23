@@ -241,18 +241,6 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 	panel.$element.append(
     );
 
-    // FIXME: ====================================================================================================================
-    debugger;
-
-    // id=random
-    var id=775430669, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
-    this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
-
-
-    // window.addEventListener('message', drawioHandleMessage);  
-    //$(window).on("message", this.drawioHandleMessage );
-    that=this;
-    $(window).on("message", function(e) {  that.drawioHandleMessage(e);  }  );
 
 
     /* ******************************* SART OF LAYOUT ******************************* */
@@ -271,7 +259,22 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
     );
 
     
-	this.$body.append( this.indexLayout.$element );
+    this.$body.append( this.indexLayout.$element );
+    
+
+    // FIXME: ====================================================================================================================
+    debugger;
+
+    // id=random
+    var id=775430669, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
+
+
+    // window.addEventListener('message', drawioHandleMessage);  
+    //$(window).on("message", this.drawioHandleMessage );
+    that=this;
+    $(window).on("message", function(e) {  that.drawioHandleMessage(e);  }  );
+
 };
 
 /**
