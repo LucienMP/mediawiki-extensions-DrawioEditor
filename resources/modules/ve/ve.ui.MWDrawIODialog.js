@@ -36,11 +36,12 @@ ve.ui.MWDrawIODialog.static.size = 'full';
 
 ve.ui.MWDrawIODialog.static.allowedEmpty = true;
 
-ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
+//ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
 //ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIONode ];
 
 // FIXME> Adding, trying to add in Node2 
-ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
+//ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
+ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2 ];
 
 /* Methods */
 
@@ -406,6 +407,7 @@ ve.ui.MWDrawIODialog.prototype.updateMwData = function ( mwData ) {
 
     //FIXME:LMP var currentModelAlignment = mwData.attrs.align;
     debugger;
+    // this.selectedNode.getAttribute( 'mw' ).parts[0].template.params???
     var currentModelAlignment = mwData.parts[0].align;
 
     // Maybe align=.... tag is missing
@@ -419,7 +421,9 @@ ve.ui.MWDrawIODialog.prototype.updateMwData = function ( mwData ) {
 	// LMP: Disable alignment selection if "wrap text" is not selected
 	this.align.setDisabled( !isSelected );
 
-	if ( !( this.selectedNode instanceof ve.dm.MWDrawIOInlineNode ) ) {
+    debugger ; // FIXME: What type is selected node?
+	//if ( !( this.selectedNode instanceof ve.dm.MWDrawIOInlineNode ) ) {
+    if ( !( this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2 ) ) {       
 //		mwData.attrs.width = dimensions.width.toString();
 //		mwData.attrs.height = dimensions.height.toString();
 
@@ -473,8 +477,12 @@ ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
 	return ve.ui.MWDrawIODialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
-			var inline = this.selectedNode instanceof ve.dm.MWDrawIOInlineNode,
-				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
+            debugger ; // FIXME: What type is selected node?
+//			var inline = this.selectedNode instanceof ve.dm.MWDrawIOInlineNode,
+//				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
+			var inline = this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2,
+				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).parts[0].template.params || {};
+                
 
 // FIXME> DrawIO handling should go here                
 //			this.input.clearUndoStack();
@@ -504,7 +512,9 @@ ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
 				this.scalable = scalable ;
 
 			} else {
-				this.scalable = ve.dm.MWDrawIONode.static.createScalable(
+                debugger ; // FIXME: What type is selected node?
+				//this.scalable = ve.dm.MWDrawIONode.static.createScalable(
+                this.scalable = ve.dm.MWDrawIOTransclusionNode2.static.createScalable(
 					{ width: 850, height: 400 }
 //					inline ? { width: 850, height: 400 } : { width: 400, height: 300 }
 				);

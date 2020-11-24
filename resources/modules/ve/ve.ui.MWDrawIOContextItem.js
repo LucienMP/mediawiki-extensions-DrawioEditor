@@ -36,8 +36,8 @@ ve.ui.MWDrawIOContextItem.static.label = OO.ui.deferMsg( 'visualeditor-mwdrawioc
 //ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIONode ];
 
 // FIXME> Adding the TransclusionNode2 
-ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIOInlineNode, ve.dm.MWDrawIONode ];
-
+//ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIOInlineNode, ve.dm.MWDrawIONode ];
+ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2 ];
 
 ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO';
 

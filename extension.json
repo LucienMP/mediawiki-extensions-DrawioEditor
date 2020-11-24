@@ -31,9 +31,7 @@
 
 		"ext.drawio.visualEditor": {
 			"scripts": [
-				"modules/ve/ve.dm.MWDrawIONode.js",
                 "modules/ve/ve.dm.MWDrawIOTransclusionNode2.js",
-				"modules/ve/ve.dm.MWDrawIOInlineNode.js",
 				"modules/ve/ve.ce.MWDrawIONode.js",
 				"modules/ve/ve.ui.MWDrawIODialogTool.js",
 				"modules/ve/ve.ui.MWDrawIODialog.js",
