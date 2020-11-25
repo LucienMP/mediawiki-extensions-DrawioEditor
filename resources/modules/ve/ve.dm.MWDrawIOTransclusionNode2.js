@@ -43,6 +43,20 @@ ve.dm.MWDrawIOTransclusionNode2.static.blockType = 'mwDrawIO';
 /* Static Methods */
 ve.dm.MWTransclusionNode.static.matchTagNames = ['div'];
 
+/*
+<div about="#mwt1" typeof="mw:Transclusion" data-parsoid="{&quot;stx&quot;:&quot;html&quot;,&quot;dsr&quot;:[10,44,null,null],&quot;pi&quot;:[[{&quot;k&quot;:&quot;type&quot;,&quot;named&quot;:true,&quot;spc&quot;:[&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot; &quot;]}]]}" data-mw="{&quot;parts&quot;:[{&quot;template&quot;:{&quot;target&quot;:{&quot;wt&quot;:&quot;#drawio:SampleChartA&quot;,&quot;function&quot;:&quot;drawio&quot;},&quot;params&quot;:{&quot;type&quot;:{&quot;wt&quot;:&quot;png&quot;}},&quot;i&quot;:0}}]}">
+<div id="drawio-img-box-775430669">
+<div id="drawio-placeholder-775430669" class="DrawioEditorInfoBox"><b>SampleChartA</b><br>empty app.diagrams.net chart</div> 
+&lt;a id='drawio-img-href-775430669' href=''&gt;&lt;img id='drawio-img-775430669' src='' title='drawio: SampleChartA' alt='drawio: SampleChartA' style='height: auto; width: 100%; max-width: 0; display:none;' /&gt;&lt;/img&gt;&lt;/a&gt;</div>
+<div id="drawio-iframe-box-775430669" style="display:none;">
+<div id="drawio-iframe-overlay-775430669" class="DrawioEditorOverlay" style="display:none;"></div></div></div>
+ */
+ve.dm.MWDrawIOTransclusionNode2.static.matchFunction = function( element ) {
+    debugger;
+    // FIXME; example way we could make the DE match correctly
+    return element.getAttribute( 'class' ) !== 'ThisIsDivTest';
+}
+
 ve.dm.MWDrawIOTransclusionNode2.static.toDataElement = function ( domElements ) {
     debugger;
 
