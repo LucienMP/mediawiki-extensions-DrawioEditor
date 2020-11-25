@@ -14,9 +14,14 @@ class SetFunctionHook {
 	 * @throws MWException
 	 */
 	public static function callback( &$parser ) {
-		$drawioEditor = new DrawioEditor();
-		$parser->setFunctionHook( 'drawio', [ $drawioEditor, 'parse' ] );
+        $drawioEditor = new DrawioEditor();
+        
+        // Legacy Parser Function {{#drawio:filename|param=...}}
+		$parser->setFunctionHook( 'drawio', [ $drawioEditor, 'parseLegacyParserFunc' ] );
 
-		return true;
+        // Extension; <drawio param=..../> 
+        $parser->setHook( 'drawio', [ $drawioEditor, 'parseExtension' ] );
+
+        return true;
 	}
 }

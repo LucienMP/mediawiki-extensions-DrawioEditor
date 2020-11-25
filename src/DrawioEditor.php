@@ -6,7 +6,9 @@ use Config;
 use File;
 use MediaWiki\MediaWikiServices;
 use Parser;
+use ParserOutput;
 use RequestContext;
+use PPFrame;
 
 class DrawioEditor {
 
@@ -26,23 +28,47 @@ class DrawioEditor {
 	}
 
 	/**
-	 * @param Parser &$parser
+	 * @param Parser &$parseExtension
 	 * @param string|null $name
 	 * @return array
 	 */
-	public function parse( &$parser, $name = null ) {
-        wfDebugLog( 'DRAWIO', "Enter parse for:".$name ) ;
+    public function parseExtension( $input, array $args, Parser $parser, PPFrame $frame ) {
 
-		/* disable caching before any output is generated */
-		$parser->getOutput()->updateCacheExpiry( 0 );
+        
+        // <drawio name=FileName/>
+        $name = array_key_exists( 'name', $args )
+            ? $args[ 'name' ]
+            : $this->config->get( 'DrawioEditorDefaultName' );
+
+        wfDebugLog( 'DRAWIO', "Enter parse for Extension:".$name ) ;
+
+        return $this->parse( $parser, $name, $args );
+    }
+    
+
+	/**
+	 * @param Parser &$parseLegacyParserFunc
+	 * @param string|null $name
+	 * @return array
+	 */
+	public function parseLegacyParserFunc( &$parser, $name = null ) {
 
 		/* parse named arguments */
 		$opts = [];
 		foreach ( array_slice( func_get_args(), 2 ) as $rawopt ) {
 			$opt = explode( '=', $rawopt, 2 );
 			$opts[ trim( $opt[ 0 ] ) ] = count( $opt ) === 2 ? trim( $opt[ 1 ] ) : true;
-		}
+        }
+        return $this->parse( $parser, $name, $opts );
+    }
 
+    public function parse( &$parser, $name, $opts ) {
+
+        wfDebugLog( 'DRAWIO', "Enter parse for:".$name ) ;
+
+		/* disable caching before any output is generated */
+        $parser->getOutput()->updateCacheExpiry( 0 );
+        
 		$opt_type = array_key_exists( 'type', $opts )
 			? $opts[ 'type' ]
 			: $this->config->get( 'DrawioEditorImageType' );
