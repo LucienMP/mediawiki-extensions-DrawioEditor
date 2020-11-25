@@ -34,13 +34,6 @@ OO.inheritClass( ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWTransclusionNode );
 // FIXME> Add for resize?
 OO.mixinClass(  ve.dm.MWDrawIOTransclusionNode2, ve.dm.ResizableNode );
 
-
-
-
-
-
-
-
 /* Static Properties */
 
 ve.dm.MWDrawIOTransclusionNode2.static.name = 'mwDrawIO';
@@ -48,6 +41,7 @@ ve.dm.MWDrawIOTransclusionNode2.static.inlineType = 'mwDrawIO';
 ve.dm.MWDrawIOTransclusionNode2.static.blockType = 'mwDrawIO';
 
 /* Static Methods */
+ve.dm.MWTransclusionNode.static.matchTagNames = ['div'];
 
 ve.dm.MWDrawIOTransclusionNode2.static.toDataElement = function ( domElements ) {
     debugger;
@@ -57,20 +51,26 @@ ve.dm.MWDrawIOTransclusionNode2.static.toDataElement = function ( domElements ) 
 		mwData = mwDataJSON ? JSON.parse( mwDataJSON ) : {};
 
 	// Parent method
-	dataElement = ve.dm.MWDrawIOTransclusionNode2.super.static.toDataElement.apply( this, arguments );
-    dataElement.attributes.cx = mwData;
+	console.log("mwData",mwData.parts[0].template.target.wt);
+	if(mwData.parts[0].template.target.wt == '#drawio:ChartName5') {
+		dataElement = ve.dm.MWDrawIOTransclusionNode2.super.static.toDataElement.apply( this, arguments );
+	    dataElement.attributes.cx = mwData;
 
-    // FIXME: LMP>  Used by ve.ce.ResizableNode.getAttributeChanges
-    dataElement.attributes.width = 200;
-    dataElement.attributes.height = 200;
+	    // FIXME: LMP>  Used by ve.ce.ResizableNode.getAttributeChanges
+	    dataElement.attributes.width = 200;
+	    dataElement.attributes.height = 200;
 
-	return dataElement;
+		// if(dataElement.attributes.cx.parts[0].template.target.wt=='#drawio:ChartName5') {
+		// }
+		return dataElement;
+	}
 };
 
 ve.dm.MWDrawIOTransclusionNode2.static.toDomElements = function ( dataElement ) {
     debugger;
 
 	var elements = ve.dm.MWDrawIOTransclusionNode2.super.static.toDomElements.apply( this, arguments );
+	console.log("elements",elements);
 	if ( Object.keys( dataElement.attributes.cx ).length ) {
 		// Do not add empty data for data-cx. For example, nodes in source page has no data for cx.
 		elements[ 0 ].setAttribute( 'data-cx', JSON.stringify( dataElement.attributes.cx ) );
