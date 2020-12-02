@@ -27,7 +27,7 @@ OO.inheritClass( ve.ui.MWDrawIODialog, ve.ui.MWExtensionDialog );
 
 /* Static Properties */
 
-ve.ui.MWDrawIODialog.static.name = 'mwDrawIO';
+ve.ui.MWDrawIODialog.static.name = 'mwDrawIOXXX';
 
 ve.ui.MWDrawIODialog.static.title = OO.ui.deferMsg( 'visualeditor-mwdrawiodialog-title' );
 

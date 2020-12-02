@@ -46,6 +46,15 @@ ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO';
 ve.ui.MWDrawIOContextItem.static.name = 'mwDrawIO';
 ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO';
 
+// 
+// LMP:FIXME> 
+ve.ui.MWDrawIOTransclusionNode2.static.isCompatibleWith = function ( model ) {
+    var compatible = ve.ui.MWDrawIOTransclusionNode2.super.static.isCompatibleWith.call( this, model );
+
+    debugger;
+    return true;
+}
+
 
 /* Methods */
 
