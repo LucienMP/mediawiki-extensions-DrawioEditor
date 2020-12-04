@@ -583,10 +583,11 @@ ve.dm.MWTransclusionNode.static.matchTagNames = ['div'];
 <div id="drawio-iframe-box-775430669" style="display:none;">
 <div id="drawio-iframe-overlay-775430669" class="DrawioEditorOverlay" style="display:none;"></div></div></div>
  */
+// Narrow down DIV matching ONLY to drawio-container divs
 ve.dm.MWDrawIOTransclusionNode2.static.matchFunction = function( element ) {
     debugger;
     // FIXME; example way we could make the DE match correctly
-    return element.getAttribute( 'class' ) !== 'ThisIsDivTest';
+    return element.getAttribute( 'class' ) === 'drawio-container';
 }
 
 

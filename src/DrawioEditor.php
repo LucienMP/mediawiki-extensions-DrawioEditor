@@ -35,13 +35,14 @@ class DrawioEditor {
     public function parseExtension( $input, array $args, Parser $parser, PPFrame $frame ) {
 
         
-        // <drawio name=FileName/>
+        // Extract name as option from tag <drawio name=FileName/>
         $name = array_key_exists( 'name', $args )
             ? $args[ 'name' ]
             : $this->config->get( 'DrawioEditorDefaultName' );
 
         wfDebugLog( 'DRAWIO', "Enter parse for Extension:".$name ) ;
 
+        // Call general parse-generator routine
         return $this->parse( $parser, $name, $args );
     }
     
@@ -59,6 +60,8 @@ class DrawioEditor {
 			$opt = explode( '=', $rawopt, 2 );
 			$opts[ trim( $opt[ 0 ] ) ] = count( $opt ) === 2 ? trim( $opt[ 1 ] ) : true;
         }
+
+        // Call general parse-generator routine
         return $this->parse( $parser, $name, $opts );
     }
 
@@ -207,10 +210,10 @@ class DrawioEditor {
 			$opt_max_width === 'chart' ? 'true' : 'false' );
 
 		/* output begin */
-		$output = '<div>';
+		$output = '<div class="drawio-container">';
 
-		/* div around the image */
-		$output .= '<div id="drawio-img-box-' . $id . '">';
+		/* div around the image; for parser-funciton we need to detect class  */
+		$output .= '<div class="drawio-container" id="drawio-img-box-' . $id . '">';
 
 		/* display edit link */
 		if ( !$this->isReadOnly( $img ) ) {
