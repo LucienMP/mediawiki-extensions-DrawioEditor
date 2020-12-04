@@ -47,14 +47,17 @@ ve.ui.MWDrawIOContextItem.static.name = 'mwDrawIO';
 ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO';
 
 // 
-// LMP:FIXME> 
-ve.ui.MWDrawIOTransclusionNode2.static.isCompatibleWith = function ( model ) {
-    var compatible = ve.ui.MWDrawIOTransclusionNode2.super.static.isCompatibleWith.call( this, model );
+// LMP:FIXME> This should be used when you want to match other blocks, OR narrow a match if you are matching other 
+// blocks contexts, or do not wish a context menu for your block for some reason.
+ve.ui.MWDrawIOContextItem.static.isCompatibleWith = function ( model ) {
+    var compatible = ve.ui.MWDrawIOContextItem.super.static.isCompatibleWith.call( this, model );
 
-    debugger;
-    return true;
+    // #############################################################################
+    //debugger;
+
+    // true/false
+    return (model instanceof ve.dm.MWDrawIOTransclusionNode2);
 }
-
 
 /* Methods */
 
