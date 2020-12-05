@@ -230,7 +230,7 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
-    var panel2 = $( '<iframe source="https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
+    var panel2 = $( '<iframe source="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
     panel2.attr('id', 'DrawIOContainer');
     panel2.css( {'border':'1px solid black', 'border-radius': '5px'});
     panel2.height( '80%' );
@@ -461,7 +461,7 @@ ve.ui.MWDrawIODialog.prototype.getReadyProcess = function ( data ) {
 
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
-    document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
+    document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
 
 	return ve.ui.MWDrawIODialog.super.prototype.getReadyProcess.call( this, data )
