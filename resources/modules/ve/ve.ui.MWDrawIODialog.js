@@ -106,7 +106,7 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 	ve.ui.MWDrawIODialog.super.prototype.initialize.call( this );
 
     // Where the dialog is going to
-    var url = 'https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json';
+    var url = 'https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json';
 
     /* ******************************* START OF TAB ******************************* */
     /* ******************************* START OF TAB ******************************* */
