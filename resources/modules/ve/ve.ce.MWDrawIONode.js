@@ -40,7 +40,7 @@ ve.ce.MWDrawIONode = function VeCeMWDrawIO( model, config ) {
 	);
 
 	// Ensure we have the styles to render the map node
-	mw.loader.using( 'ext.kartographer' );
+	// mw.loader.using( 'ext.kartographer' );
 
 	// DOM changes
 	this.$element
@@ -59,16 +59,17 @@ OO.mixinClass( ve.ce.MWDrawIONode, ve.ce.ResizableNode );
 //FIXME: Because this is an extension mode
 OO.mixinClass( ve.ce.MWDrawIONode, ve.ce.MWTransclusionNode );
 ve.ce.MWDrawIONode.prototype.getTemplatePartDescriptions = function ( _model ) {
-debugger;
+    debugger;
 }
 
 /* Static Properties */
 
-ve.ce.MWDrawIONode.static.name = 'mwDrawIO';
+// LMP> Must match the VE.DM type
+ve.ce.MWDrawIONode.static.name = 'mwDrawIO_CONTEXT2';
 
 ve.ce.MWDrawIONode.static.tagName = 'div';
 
-ve.ce.MWDrawIONode.static.primaryCommandName = 'mwDrawIO';
+ve.ce.MWDrawIONode.static.primaryCommandName = 'mwDrawIO_CONTEXT1';
 
 /* Methods */
 

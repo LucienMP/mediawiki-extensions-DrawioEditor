@@ -568,9 +568,9 @@ OO.mixinClass(  ve.dm.MWDrawIOTransclusionNode2, ve.dm.ResizableNode );
 
 /* Static Properties */
 
-ve.dm.MWDrawIOTransclusionNode2.static.name = 'mwDrawIO';
-ve.dm.MWDrawIOTransclusionNode2.static.inlineType = 'mwDrawIO';
-ve.dm.MWDrawIOTransclusionNode2.static.blockType = 'mwDrawIO';
+ve.dm.MWDrawIOTransclusionNode2.static.name = 'mwDrawIO_CONTEXT2';
+ve.dm.MWDrawIOTransclusionNode2.static.inlineType = 'mwDrawIO_CONTEXT2';
+ve.dm.MWDrawIOTransclusionNode2.static.blockType = 'mwDrawIO_CONTEXT2';
 
 /* Static Methods */
 ve.dm.MWTransclusionNode.static.matchTagNames = ['div'];
