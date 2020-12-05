@@ -105,8 +105,6 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 	// Parent method
 	ve.ui.MWDrawIODialog.super.prototype.initialize.call( this );
 
-    // Where the dialog is going to
-    var url = 'https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json';
 
     /* ******************************* START OF TAB ******************************* */
     /* ******************************* START OF TAB ******************************* */
@@ -230,7 +228,10 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
-    var panel2 = $( '<iframe source="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
+    // Where the dialog is going to
+    var url = 'https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json';
+
+    var panel2 = $( '<iframe source="'+url+'">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
     panel2.attr('id', 'DrawIOContainer');
     panel2.css( {'border':'1px solid black', 'border-radius': '5px'});
     panel2.height( '80%' );
@@ -457,7 +458,7 @@ ve.ui.MWDrawIODialog.prototype.getReadyProcess = function ( data ) {
     //$('#ve-ui-mwWavedromDialog-waveWidget').load('/path/file.html body')
     // BAD: Doesnt work
     //$('#ve-ui-mwWavedromDialog-waveWidget').src = "" ;
-    //$('#DrawIOContainer').src = "https://embed.diagrams.net/?embed=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json" ;
+    //$('#DrawIOContainer').src = "https://...." ;
 
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
