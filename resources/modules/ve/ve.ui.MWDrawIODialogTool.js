@@ -28,7 +28,7 @@ ve.ui.MWDrawIODialogTool.static.name = 'mwDrawIOMenuClass';
 ve.ui.MWDrawIODialogTool.static.group = 'object';
 ve.ui.MWDrawIODialogTool.static.icon = 'articles'; // LMP-A: oojs-ui.styles.icons-content, MENU
 ve.ui.MWDrawIODialogTool.static.title = OO.ui.deferMsg( 'visualeditor-mwdrawiodialog-title' );
-ve.ui.MWDrawIODialogTool.static.commandName = 'mwDrawIOMenu';
+ve.ui.MWDrawIODialogTool.static.commandName = 'mwDrawIOCMD_Insert';
 
 // FIXME> Trying to get Transclusion to work
 //ve.ui.MWDrawIODialogTool.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode];//, ve.dm.MWDrawIOTransclusionNode2 ];
@@ -43,7 +43,18 @@ ve.ui.toolFactory.register( ve.ui.MWDrawIODialogTool );
 
 ve.ui.commandRegistry.register(
     new ve.ui.Command(
-        'mwDrawIOMenu', 'window', 'open',
+        'mwDrawIOCMD_Insert', 'window', 'open',
+
+        // Dialog to open
+        { args: [ 'mwDrawIOXXX' ], supportedSelections: [ 'linear' ] }
+    )
+);
+
+ve.ui.commandRegistry.register(
+    new ve.ui.Command(
+        'mwDrawIOCMD_ContextEdit', 'window', 'open',
+
+        // Dialog to open
         { args: [ 'mwDrawIOXXX' ], supportedSelections: [ 'linear' ] }
     )
 );

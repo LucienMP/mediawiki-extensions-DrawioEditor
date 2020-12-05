@@ -26,7 +26,7 @@ OO.inheritClass( ve.ui.MWDrawIOContextItem, ve.ui.LinearContextItem );
 
 /* Static Properties */
 
-ve.ui.MWDrawIOContextItem.static.name = 'mwDrawIO';
+ve.ui.MWDrawIOContextItem.static.name = 'mwDrawIOA';
 
 ve.ui.MWDrawIOContextItem.static.icon = 'articles';
 
@@ -39,12 +39,12 @@ ve.ui.MWDrawIOContextItem.static.label = OO.ui.deferMsg( 'visualeditor-mwdrawioc
 //ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIOInlineNode, ve.dm.MWDrawIONode ];
 ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2 ];
 
-ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO';
+//ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIOB';
 
 
 // FIXME: LMP trying to launch properly
-ve.ui.MWDrawIOContextItem.static.name = 'mwDrawIO';
-ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO';
+ve.ui.MWDrawIOContextItem.static.name = 'mwDrawIOC';
+ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIOCMD_ContextEdit';
 
 // 
 // LMP:FIXME> This should be used when you want to match other blocks, OR narrow a match if you are matching other 
