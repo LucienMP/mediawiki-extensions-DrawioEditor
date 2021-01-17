@@ -46,7 +46,7 @@ ve.ui.commandRegistry.register(
         'mwDrawIOCMD_Insert', 'window', 'open',
 
         // Dialog to open
-        { args: [ 'mwDrawIOXXX' ], supportedSelections: [ 'linear' ] }
+        { args: [ 'mwDrawIO_TransclusionDialog' ], supportedSelections: [ 'linear' ] }
     )
 );
 
@@ -55,6 +55,15 @@ ve.ui.commandRegistry.register(
         'mwDrawIOCMD_ContextEdit', 'window', 'open',
 
         // Dialog to open
-        { args: [ 'mwDrawIOXXX' ], supportedSelections: [ 'linear' ] }
+        { args: [ 'mwDrawIO_TransclusionDialog' ], supportedSelections: [ 'linear' ] }
+    )
+);
+
+ve.ui.commandRegistry.register(
+    new ve.ui.Command(
+        'mwDrawIOCMD_ContextEditBlockExtension', 'window', 'open',
+
+        // Dialog to open
+        { args: [ 'mwDrawIO_ExtensionBlockDialog' ], supportedSelections: [ 'linear' ] }
     )
 );

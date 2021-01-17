@@ -27,7 +27,7 @@ OO.inheritClass( ve.ui.MWDrawIODialog, ve.ui.MWExtensionDialog );
 
 /* Static Properties */
 
-ve.ui.MWDrawIODialog.static.name = 'mwDrawIO_TransclusionDialog';
+ve.ui.MWDrawIODialog.static.name = 'mwDrawIOXXX';
 
 ve.ui.MWDrawIODialog.static.title = OO.ui.deferMsg( 'visualeditor-mwdrawiodialog-title' );
 
@@ -392,32 +392,7 @@ ve.ui.MWDrawIODialog.prototype.updateMwData = function ( mwData ) {
 	// Parent method
 	ve.ui.MWDrawIODialog.super.prototype.updateMwData.call( this, mwData );
 
-/*
-	if ( this.map ) {
-		center = this.map.getCenter();
-		zoom = this.map.getZoom();
-		scaled = this.map.getScaleLatLng( center.lat, center.lng, zoom );
-		latitude = scaled[ 0 ];
-		longitude = scaled[ 1 ];
-	} else {
-		// Map not loaded in insert, can't insert
-		//return;
-	}
-*/
-
-
-    //FIXME:LMP var currentModelAlignment = mwData.attrs.align;
-    debugger;
-    // this.selectedNode.getAttribute( 'mw' ).parts[0].template.params???
-    var currentModelAlignment = mwData.parts[0].align;
-
-    // Maybe align=.... tag is missing
-    if (typeof currentModelAlignment !== 'undefined') currentModelAlignment = "none";
-
-
-
-	// this.alignCheckbox.setSelected( alignment !== 'none' );
-	var isSelected = this.alignCheckbox.isSelected() ;
+	var isSelected = this.alignCheckbox.isSelected();
 
 	// LMP: Disable alignment selection if "wrap text" is not selected
 	this.align.setDisabled( !isSelected );
@@ -482,7 +457,7 @@ ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
 //			var inline = this.selectedNode instanceof ve.dm.MWDrawIOInlineNode,
 //				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
 			var inline = this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2,
-				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).parts[0].template.params || {};
+				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
                 
 
 // FIXME> DrawIO handling should go here                

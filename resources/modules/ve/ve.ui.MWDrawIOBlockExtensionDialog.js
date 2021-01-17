@@ -13,9 +13,9 @@
  * @constructor
  * @param {Object} [config] Configuration options
  */
-ve.ui.MWDrawIODialog = function VeUiMWDrawIODialog() {
+ve.ui.MWDrawIOBlockExtensionDialog = function VeUiMWDrawIOBlockExtensionDialog() {
 	// Parent constructor
-	ve.ui.MWDrawIODialog.super.apply( this, arguments );
+	ve.ui.MWDrawIOBlockExtensionDialog.super.apply( this, arguments );
 
 	this.updateGeoJson = $.debounce( 300, $.proxy( this.updateGeoJson, this ) );
 	this.resetMapPosition = $.debounce( 300, $.proxy( this.resetMapPosition, this ) );
@@ -23,25 +23,25 @@ ve.ui.MWDrawIODialog = function VeUiMWDrawIODialog() {
 
 /* Inheritance */
 
-OO.inheritClass( ve.ui.MWDrawIODialog, ve.ui.MWExtensionDialog );
+OO.inheritClass( ve.ui.MWDrawIOBlockExtensionDialog, ve.ui.MWExtensionDialog );
 
 /* Static Properties */
 
-ve.ui.MWDrawIODialog.static.name = 'mwDrawIO_TransclusionDialog';
+ve.ui.MWDrawIOBlockExtensionDialog.static.name = 'mwDrawIO_ExtensionBlockDialog';
 
-ve.ui.MWDrawIODialog.static.title = OO.ui.deferMsg( 'visualeditor-mwdrawiodialog-title' );
+ve.ui.MWDrawIOBlockExtensionDialog.static.title = OO.ui.deferMsg( 'visualeditor-mwdrawiodialog-title' );
 
 // https://doc.wikimedia.org/VisualEditor/master/#!/api/OO.ui.Window-static-property-size
-ve.ui.MWDrawIODialog.static.size = 'full';
+ve.ui.MWDrawIOBlockExtensionDialog.static.size = 'full';
 
-ve.ui.MWDrawIODialog.static.allowedEmpty = true;
+ve.ui.MWDrawIOBlockExtensionDialog.static.allowedEmpty = true;
 
-//ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
-//ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIONode ];
+//ve.ui.MWDrawIOBlockExtensionDialog.static.modelClasses = [ ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
+//ve.ui.MWDrawIOBlockExtensionDialog.static.modelClasses = [ ve.dm.MWDrawIONode ];
 
-// FIXME> Adding, trying to add in Node2 
-//ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
-ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2 ];
+// FIXME> Adding, trying to add in Node2
+//ve.ui.MWDrawIOBlockExtensionDialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2, ve.dm.MWDrawIONode, ve.dm.MWDrawIOInlineNode ];
+ve.ui.MWDrawIOBlockExtensionDialog.static.modelClasses = [ ve.dm.MWDrawIOBlockExtensionNode ];
 
 /* Methods */
 
@@ -50,87 +50,92 @@ ve.ui.MWDrawIODialog.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2 ];
 // ########################################################################################################################
 // ########################################################################################################################
 
-ve.ui.MWDrawIODialog.prototype.drawioHandleMessage = function (eJqueryEvent) {
-    console.log("drawioHandleMessage");
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.drawioHandleMessage = function (eJqueryEvent) {
+	console.log("drawioHandleMessage");
 
-    debugger;
+	debugger;
 
-    // FIXME:LMP:Extract original event from jquery wrapper
-    e = eJqueryEvent.originalEvent;
+	// FIXME:LMP:Extract original event from jquery wrapper
+	e = eJqueryEvent.originalEvent;
 
-    // we only act on event coming from draw.io iframes
-    if (e.origin != 'https://embed.diagrams.net')
-        return;
-    
-    if (!this.editor)
-        return;
-       
-    evdata = JSON.parse(e.data);
+	// we only act on event coming from draw.io iframes
+	if (e.origin != 'https://embed.diagrams.net')
+		return;
 
-    switch(evdata['event']) {
-        case 'init':
-            this.editor.initCallback();
-            break;
+	if (!this.editor)
+		return;
 
-        case 'load':
-            break;
+	evdata = JSON.parse(e.data);
 
-        case 'save':
-            this.editor.saveCallback();
-            break;
+	switch(evdata['event']) {
+		case 'init':
+			this.editor.initCallback();
+			break;
 
-        case 'export':
-            this.editor.exportCallback(evdata['format'], evdata['data']);
-            break;
+		case 'load':
+			break;
 
-        case 'exit':
-            this.editor.exitCallback();
-	    // editor is null after this callback
-            break;
+		case 'save':
+			this.editor.saveCallback();
+			break;
 
-        default:
-            alert('Received unknown event from drawio iframe: ' + evdata['event']);
-    }
+		case 'export':
+			this.editor.exportCallback(evdata['format'], evdata['data']);
+			break;
+
+		case 'exit':
+			this.editor.exitCallback();
+			// editor is null after this callback
+			break;
+
+		case 'openLink':
+			// Help>About
+			break;
+
+		default:
+			alert('Received unknown event from drawio iframe: ' + evdata['event']);
+	}
 };
 
 
 /**
  * @inheritdoc
  */
-ve.ui.MWDrawIODialog.prototype.initialize = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	var panel,
 		positionPopupButton,
 		$currentPositionTable;
 
 	// Parent method
-	ve.ui.MWDrawIODialog.super.prototype.initialize.call( this );
+	ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.initialize.call( this );
 
 
     /* ******************************* START OF TAB ******************************* */
     /* ******************************* START OF TAB ******************************* */
     /* ******************************* START OF TAB ******************************* */
 
-       // Layout for the formula inserter (formula tab panel) and options form (options tab panel)
-       this.indexLayout = new OO.ui.IndexLayout();
+	// Layout for the formula inserter (formula tab panel) and options form (options tab panel)
+	this.indexLayout = new OO.ui.IndexLayout();
 
-       diagramTabPanel = new OO.ui.TabPanelLayout( 'diagram', {
-               label: ve.msg( 'math-visualeditor-mwlatexdialog-card-formula' ),
-               padded: true
-       } );
-       optionsTabPanel = new OO.ui.TabPanelLayout( 'options', {
-               label: ve.msg( 'math-visualeditor-mwlatexdialog-card-options' ),
-               padded: true
-       } );
+	diagramTabPanel = new OO.ui.TabPanelLayout( 'diagram', {
+			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-formula' ),
+			padded: true
+	} );
 
-       this.indexLayout.addTabPanels( [
-                diagramTabPanel,
-               optionsTabPanel
-       ] );
+	optionsTabPanel = new OO.ui.TabPanelLayout( 'options', {
+			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-options' ),
+			padded: true
+	} );
 
-    
-    /* ******************************* START OF OPTIONS ******************************* */
-    /* ******************************* START OF OPTIONS ******************************* */
-    /* ******************************* START OF OPTIONS ******************************* */
+	this.indexLayout.addTabPanels( [
+		diagramTabPanel,
+		optionsTabPanel
+	] );
+
+
+	/* ******************************* START OF OPTIONS ******************************* */
+	/* ******************************* START OF OPTIONS ******************************* */
+	/* ******************************* START OF OPTIONS ******************************* */
 
 
 	this.map = null;
@@ -139,12 +144,12 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 
 	this.dimensions = new ve.ui.DimensionsWidget();
 
-	this.align = new ve.ui.AlignWidget( {
+	this.alignWidget = new ve.ui.AlignWidget( {
 		dir: this.getDir()
 	} );
 
 
-    // FIXME> Remove me 
+    // FIXME> Remove me
 	this.resetMapButton = new OO.ui.ButtonWidget( {
 		label: ve.msg( 'visualeditor-mwdrawiodialog-reset-map' )
 	} );
@@ -155,7 +160,7 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 		label: ve.msg( 'visualeditor-mwdrawiodialog-size' )
 	} );
 
-	this.alignField = new OO.ui.FieldLayout( this.align, {
+	this.alignField = new OO.ui.FieldLayout( this.alignWidget, {
 		align: 'right',
 		label: ve.msg( 'visualeditor-mwdrawiodialog-align' )
 	} );
@@ -184,40 +189,40 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
 	/* LMP END */
 
 
-    // DrawIO Image representation input
-    this.typeFieldset = new OO.ui.FieldsetLayout( {
-        $overlay: this.$overlay,
-        label: ve.msg( 'visualeditor-mwdrawio-style-title' ),
-    help: ve.msg( 'visualeditor-mwdrawio-style-title-help' ),
-        icon: 'parameter'
-    } );
-    
+	// DrawIO Image representation input
+	this.typeFieldset = new OO.ui.FieldsetLayout( {
+		$overlay: this.$overlay,
+		label: ve.msg( 'visualeditor-mwdrawio-style-title' ),
+		help: ve.msg( 'visualeditor-mwdrawio-style-title-help' ),
+		icon: 'parameter'
+	} );
 
-        this.typeSelectDropdown = new OO.ui.DropdownWidget( { $overlay: this.$overlay } );
-        this.typeSelect = this.typeSelectDropdown.getMenu();
-        this.typeSelect.addItems( [
-                // TODO: Inline images require a bit of further work, will be coming soon
-                new OO.ui.MenuOptionWidget( {
-                        data: 'thumb',
-                        icon: 'image-thumbnail',
-                        label: ve.msg( 'visualeditor-mwdrawio-pulldownA' )
-                } ),
-                new OO.ui.MenuOptionWidget( {
-                        data: 'frameless',
-                        icon: 'image-frameless',
-                        label: ve.msg( 'visualeditor-mwdrawio-pulldownB' )
-                } ),
-                new OO.ui.MenuOptionWidget( {
-                        data: 'frame',
-                        icon: 'image-frame',
-                        label: ve.msg( 'visualeditor-mwdrawio-pulldownC' )
-                } )
-        ] );
 
-        // Build type fieldset
-        this.typeFieldset.$element.append(
-                this.typeSelectDropdown.$element
-        );
+	this.typeSelectDropdown = new OO.ui.DropdownWidget( { $overlay: this.$overlay } );
+	this.typeSelect = this.typeSelectDropdown.getMenu();
+	this.typeSelect.addItems( [
+			// TODO: Inline images require a bit of further work, will be coming soon
+			new OO.ui.MenuOptionWidget( {
+					data: 'thumb',
+					icon: 'image-thumbnail',
+					label: ve.msg( 'visualeditor-mwdrawio-pulldownA' )
+			} ),
+			new OO.ui.MenuOptionWidget( {
+					data: 'frameless',
+					icon: 'image-frameless',
+					label: ve.msg( 'visualeditor-mwdrawio-pulldownB' )
+			} ),
+			new OO.ui.MenuOptionWidget( {
+					data: 'frame',
+					icon: 'image-frame',
+					label: ve.msg( 'visualeditor-mwdrawio-pulldownC' )
+			} )
+	] );
+
+	// Build type fieldset
+	this.typeFieldset.$element.append(
+			this.typeSelectDropdown.$element
+	);
 
     // FIXME: Select the correct pulldown for the style, or select the "default"
     // this.typeSelect.selectItemByData( this.imageModel.getType() || 'none' );
@@ -260,9 +265,9 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
         panel2
     );
 
-    
+
     this.$body.append( this.indexLayout.$element );
-    
+
 
     // FIXME: ====================================================================================================================
     debugger;
@@ -272,7 +277,7 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
 
 
-    // window.addEventListener('message', drawioHandleMessage);  
+    // window.addEventListener('message', drawioHandleMessage);
     //$(window).on("message", this.drawioHandleMessage );
     that=this;
     $(window).on("message", function(e) {  that.drawioHandleMessage(e);  }  );
@@ -284,7 +289,7 @@ ve.ui.MWDrawIODialog.prototype.initialize = function () {
  *
  * @param {string} newValue
  */
-ve.ui.MWDrawIODialog.prototype.onDimensionsChange = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.onDimensionsChange = function () {
 	var dimensions, center;
 
 	dimensions = this.dimensions.getDimensions();
@@ -301,7 +306,7 @@ ve.ui.MWDrawIODialog.prototype.onDimensionsChange = function () {
     // FIXME:LMP: map went missing...
     debugger;
     //this.$map.css( dimensions );
-    
+
 	this.updateSize();
 
 /*
@@ -320,7 +325,7 @@ ve.ui.MWDrawIODialog.prototype.onDimensionsChange = function () {
 /**
  * Reset the map's position
  */
-ve.ui.MWDrawIODialog.prototype.resetMapPosition = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.resetMapPosition = function () {
 	var position,
 		dialog = this;
 
@@ -342,7 +347,9 @@ ve.ui.MWDrawIODialog.prototype.resetMapPosition = function () {
 /**
  * Update action states
  */
-ve.ui.MWDrawIODialog.prototype.updateActions = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateActions = function () {
+	console.log( "XXXXXXXXXXXXXX Modified XXXXXXXXXXXXXX" );
+
 	var newMwData, modified,
 		mwData = this.selectedNode && this.selectedNode.getAttribute( 'mw' );
 
@@ -368,9 +375,9 @@ ve.ui.MWDrawIODialog.prototype.updateActions = function () {
 /**
  * @inheritdoc ve.ui.MWExtensionWindow
  */
-ve.ui.MWDrawIODialog.prototype.insertOrUpdateNode = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.insertOrUpdateNode = function () {
 	// Parent method
-	ve.ui.MWDrawIODialog.super.prototype.insertOrUpdateNode.apply( this, arguments );
+	ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.insertOrUpdateNode.apply( this, arguments );
 
 	// Update scalable
 	this.scalable.setCurrentDimensions(
@@ -383,62 +390,51 @@ ve.ui.MWDrawIODialog.prototype.insertOrUpdateNode = function () {
 /**
  * @inheritdoc ve.ui.MWExtensionWindow
  */
-ve.ui.MWDrawIODialog.prototype.updateMwData = function ( mwData ) {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) {
+	/*
+	 * mwData.attrs updated results in "Apply Changes"
+	 *
+	 */
 	var center, scaled, latitude, longitude, zoom,
 		dimensions = // this.scalable.getBoundedDimensions(
 			this.dimensions.getDimensions()
 		;//);
 
 	// Parent method
-	ve.ui.MWDrawIODialog.super.prototype.updateMwData.call( this, mwData );
+	ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.updateMwData.call( this, mwData );
 
-/*
-	if ( this.map ) {
-		center = this.map.getCenter();
-		zoom = this.map.getZoom();
-		scaled = this.map.getScaleLatLng( center.lat, center.lng, zoom );
-		latitude = scaled[ 0 ];
-		longitude = scaled[ 1 ];
-	} else {
-		// Map not loaded in insert, can't insert
-		//return;
-	}
-*/
+	var currentModelAlignment = mwData.attrs.align;
 
-
-    //FIXME:LMP var currentModelAlignment = mwData.attrs.align;
-    debugger;
-    // this.selectedNode.getAttribute( 'mw' ).parts[0].template.params???
-    var currentModelAlignment = mwData.parts[0].align;
-
-    // Maybe align=.... tag is missing
-    if (typeof currentModelAlignment !== 'undefined') currentModelAlignment = "none";
-
-
+	// Maybe align=.... tag is missing
+	if (typeof currentModelAlignment !== 'undefined') currentModelAlignment = "none";
 
 	// this.alignCheckbox.setSelected( alignment !== 'none' );
 	var isSelected = this.alignCheckbox.isSelected() ;
 
 	// LMP: Disable alignment selection if "wrap text" is not selected
-	this.align.setDisabled( !isSelected );
+	this.alignWidget.setDisabled( !isSelected );
 
     debugger ; // FIXME: What type is selected node?
-	//if ( !( this.selectedNode instanceof ve.dm.MWDrawIOInlineNode ) ) {
-    if ( !( this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2 ) ) {       
+
+	// if ( !( this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2 ) ) 
+	{
 //		mwData.attrs.width = dimensions.width.toString();
 //		mwData.attrs.height = dimensions.height.toString();
 
 	    if( isSelected ) {
-		// LMP: Case of just freshly un-selecting the wrap button, this is null - default to left
-		//			var selected=this.align.getSelectedItem();
-		var selected=this.align.findSelectedItem();
-		if( selected === null ) selected=this.align.selectItemByData( 'left' );
-		
-//		mwData.attrs.align = selected.getData();
+			// LMP: Case of just freshly un-selecting the wrap button, this is null - default to left
+			//			var selected=this.alignWidget.getSelectedItem();
+			var selected=this.alignWidget.findSelectedItem();
+			if( selected === null ) selected=alignWidget.selectItemByData( 'left' );
+
+			mwData.attrs.align = selected.getData();
+
+			// XXX
+			debugger;
 	    }
 	    else
 	    {
-//		mwData.attrs.align = 'none' ;
+			mwData.attrs.align = 'none' ;
 	    }
 	}
 };
@@ -446,7 +442,7 @@ ve.ui.MWDrawIODialog.prototype.updateMwData = function ( mwData ) {
 /**
  * @inheritdoc
  */
-ve.ui.MWDrawIODialog.prototype.getReadyProcess = function ( data ) {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data ) {
 
 	// https://www.mediawiki.org/wiki/OOUI/Windows
 	// https://www.mediawiki.org/wiki/OOUI/Windows/Process_Dialogs
@@ -465,7 +461,7 @@ ve.ui.MWDrawIODialog.prototype.getReadyProcess = function ( data ) {
     document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
 
-	return ve.ui.MWDrawIODialog.super.prototype.getReadyProcess.call( this, data )
+	return ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
 			this.setupDrawIORender();
 		}, this );
@@ -474,18 +470,16 @@ ve.ui.MWDrawIODialog.prototype.getReadyProcess = function ( data ) {
 /**
  * @inheritdoc
  */
-ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.getSetupProcess = function ( data ) {
 	data = data || {};
-	return ve.ui.MWDrawIODialog.super.prototype.getSetupProcess.call( this, data )
+	return ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.getSetupProcess.call( this, data )
 		.next( function () {
             debugger ; // FIXME: What type is selected node?
-//			var inline = this.selectedNode instanceof ve.dm.MWDrawIOInlineNode,
-//				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
-			var inline = this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2,
-				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).parts[0].template.params || {};
-                
+			var inline = this.selectedNode instanceof ve.dm.MWDrawIOBlockExtensionNode,
+				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
 
-// FIXME> DrawIO handling should go here                
+
+// FIXME> DrawIO handling should go here
 //			this.input.clearUndoStack();
 
 			this.actions.setMode( this.selectedNode ? 'edit' : 'insert' );
@@ -522,7 +516,7 @@ ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
 			}
 
             // Events
-/* FIXME> LMP > Add proper events for read/write/exit of the div            
+/* FIXME> LMP > Add proper events for read/write/exit of the div
 			this.input.connect( this, {
 				change: 'updateGeoJson',
 				resize: 'updateSize'
@@ -532,17 +526,17 @@ ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
 				widthChange: 'onDimensionsChange',
 				heightChange: 'onDimensionsChange'
 			} );
-			this.align.connect( this, { choose: 'updateActions' } );
+			this.alignWidget.connect( this, { choose: 'updateActions' } );
 			this.alignCheckbox.connect( this, { change: 'updateActions' } );
 
 			this.resetMapButton.connect( this, { click: 'resetMapPosition' } );
 
 			this.dimensionsField.toggle( !inline );
 
-			this.alignField.toggle( !inline );
+//			this.alignField.toggle( !inline );
 
 			// TODO: Support block/inline conversion
-			this.align.selectItemByData( mwAttrs.align || 'right' );
+			this.alignWidget.selectItemByData( mwAttrs.align || 'right' );
 
 			this.resetMapButton.$element.toggle( !!this.selectedNode );
 
@@ -555,7 +549,7 @@ ve.ui.MWDrawIODialog.prototype.getSetupProcess = function ( data ) {
 /**
  * Setup the map control
  */
-ve.ui.MWDrawIODialog.prototype.setupDrawIORender = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.setupDrawIORender = function () {
 	var dialog = this;
 
 	//	DrawIO.ProcessAll(); // LMP-FIXME
@@ -658,7 +652,7 @@ ve.ui.MWDrawIODialog.prototype.setupDrawIORender = function () {
  *
  * @return {Object} Object containing latitude, longitude and zoom
  */
-ve.ui.MWDrawIODialog.prototype.getInitialMapPosition = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.getInitialMapPosition = function () {
 	var latitude, longitude, zoom,
 		pageCoords = mw.config.get( 'wgCoordinates' ),
 		mwData = this.selectedNode && this.selectedNode.getAttribute( 'mw' ),
@@ -688,7 +682,7 @@ ve.ui.MWDrawIODialog.prototype.getInitialMapPosition = function () {
 /**
  * Update the GeoJSON layer from the current input state
  */
-ve.ui.MWDrawIODialog.prototype.updateGeoJson = function () {
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateGeoJson = function () {
 	var self = this;
 
 
@@ -722,8 +716,8 @@ ve.ui.MWDrawIODialog.prototype.updateGeoJson = function () {
 /**
  * @inheritdoc
  */
-ve.ui.MWDrawIODialog.prototype.getTeardownProcess = function ( data ) {
-	return ve.ui.MWDrawIODialog.super.prototype.getTeardownProcess.call( this, data )
+ve.ui.MWDrawIOBlockExtensionDialog.prototype.getTeardownProcess = function ( data ) {
+	return ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.getTeardownProcess.call( this, data )
 		.first( function () {
             // Events
 // FIXME>            
@@ -741,4 +735,4 @@ ve.ui.MWDrawIODialog.prototype.getTeardownProcess = function ( data ) {
 
 /* Registration */
 
-ve.ui.windowFactory.register( ve.ui.MWDrawIODialog );
+ve.ui.windowFactory.register( ve.ui.MWDrawIOBlockExtensionDialog );
