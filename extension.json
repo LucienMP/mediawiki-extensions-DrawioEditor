@@ -31,16 +31,17 @@
 
 		"ext.drawio.visualEditor": {
 			"scripts": [
-                "modules/ve/ve.dm.MWDrawIOBlockExtensionNode.js",
-                "modules/ve/ve.ce.MWDrawIOBlockExtensionNode.js",
-				"modules/ve/ve.ui.MWDrawIOBlockExtensionContextItem.js",
-				"modules/ve/ve.ui.MWDrawIOBlockExtensionDialog.js",
+                "modules/ve/node/ve.dm.MWDrawIOBlockExtensionNode.js",
+                "modules/ve/node/ve.ce.MWDrawIOBlockExtensionNode.js",
+				"modules/ve/node/ve.ui.MWDrawIOBlockExtensionContextItem.js",
+				"modules/ve/node/ve.ui.MWDrawIOBlockExtensionDialog.js",
 
-                "modules/ve/ve.dm.MWDrawIOTransclusionNode2.js",
-				"modules/ve/ve.ce.MWDrawIONode.js",
-				"modules/ve/ve.ui.MWDrawIODialogTool.js",
-				"modules/ve/ve.ui.MWDrawIODialog.js",
-				"modules/ve/ve.ui.MWDrawIOContextItem.js"
+                "modules/ve/parfunc/ve.dm.MWDrawIOTransclusionNode2.js",
+				"modules/ve/parfunc/ve.ce.MWDrawIONode.js",
+				"modules/ve/parfunc/ve.ui.MWDrawIODialog.js",
+				"modules/ve/parfunc/ve.ui.MWDrawIOContextItem.js",
+
+				"modules/ve/ve.ui.MWDrawIODialogTool.js"
 			],
             "styles": [
                 "modules/ve/ve.ui.MWDrawIO.css"
@@ -69,7 +70,7 @@
 
 				"visualeditor-mwdrawiodialog-position-button",
                 "visualeditor-mwdrawiodialog-reset-map",
-                
+
                 "visualeditor-mwdrawio-style-title",
                 "visualeditor-mwdrawio-style-title-help",
 				"visualeditor-mwdrawio-pulldownA",

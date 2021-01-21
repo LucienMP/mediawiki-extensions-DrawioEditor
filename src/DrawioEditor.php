@@ -32,20 +32,19 @@ class DrawioEditor {
 	/**
 	 * Parser hook handler for <drawio>
 	 *
-	 * @param string|null	$data		A string with the content of the tag, or null.
-	 * @param array			$attribs	The attributes of the tag.
-	 * @param Parser		$parser		Parser instance available to render
-	 *									wikitext into html, or parser methods.
-	 * @param PPFrame		$frame		Can be used to see what template
-	 * 									arguments ({{{1}}}) this hook was used with.
+	 * @param string|null $data A string with the content of the tag, or null.
+	 * @param array $attribs The attributes of the tag.
+	 * @param Parser $parser Parser instance available to render
+	 *                             wikitext into html, or parser methods.
+	 * @param PPFrame $frame Can be used to see what template
+	 *                             arguments ({{{1}}}) this hook was used with.
 	 *
 	 * @return string HTML to insert in the page.
 	 */
-	public function parseExtension( /*mixed*/ $data, array $attribs, Parser $parser, PPFrame $frame ) {
-
+	public function parseExtension( $data, array $attribs, Parser $parser, PPFrame $frame ) {
 		// Extract name as option from tag <drawio name=FileName .../>
-		$name = array_key_exists( 'name', $attribs )
-			? $attribs[ 'name' ]
+		$name = array_key_exists( 'filename', $attribs )
+			? $attribs[ 'filename' ]
 			: null;
 
 		// Call general parse-generator routine
@@ -55,15 +54,13 @@ class DrawioEditor {
 	/**
 	 * Parser hook handler for {{drawio}}
 	 *
-	 * @param Parser		&$parser	Parser instance available to render
-	 *									wikitext into html, or parser methods.
-	 * @param string|null	$name		File name of chart.
-	 * @param array			$args		Further attributes in form opt1=value,opt2=value,...
+	 * @param Parser &$parser Parser instance available to render
+	 *                             wikitext into html, or parser methods.
+	 * @param string|null $name File name of chart.
 	 *
 	 * @return array HTML to insert in the page.
 	 */
 	public function parseLegacyParserFunc( Parser &$parser, $name = null ) {
-
 		/* parse named arguments */
 		$opts = [];
 		foreach ( array_slice( func_get_args(), 2 ) as $rawopt ) {
@@ -79,16 +76,15 @@ class DrawioEditor {
 	 * Generates the HTML required to embed a SVG/PNG DrawIO diagram, supports
 	 * a few formatting options to control with width/height, and image format.
 	 *
-	 * @param Parser		&$parser	Parser instance available to render
-	 *									wikitext into html, or parser methods.
-	 * @param string|null	$name		File name of chart.
-	 * @param array			$opts		Further attributes as associative array:
-	 * 									width, height, max-height, type, interactive.
+	 * @param Parser &$parser Parser instance available to render
+	 *                             wikitext into html, or parser methods.
+	 * @param string|null $name File name of chart.
+	 * @param array $opts Further attributes as associative array:
+	 *                             width, height, max-height, type, interactive.
 	 *
 	 * @return array HTML to insert in the page.
 	 */
 	public function parse( &$parser, $name, $opts ) {
-
 		/* disable caching before any output is generated */
 		$parser->getOutput()->updateCacheExpiry( 0 );
 
@@ -226,8 +222,12 @@ class DrawioEditor {
 			$opt_width === 'chart' ? 'true' : 'false',
 			$opt_max_width === 'chart' ? 'true' : 'false' );
 
+			// LMP>FIXME
+			$img_style = sprintf( 'height: %s; width: %s; max-width: %s;',
+			$css_img_height, $css_img_width, $css_img_max_width );
+
 		/* output begin */
-		$output = '<div class="drawio-container">';
+		$output = '<div class="drawio-container" style="'.$img_style.'">';
 
 		/* div around the image; for parser-funciton we need to detect class  */
 		$output .= '<div class="drawio-container" id="drawio-img-box-' . $id . '">';

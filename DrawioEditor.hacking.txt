@@ -1,0 +1,283 @@
+
+# All pages that have been edited
+use kek_wiki;
+select rev_timestamp, rev_actor, page_title from kek_revision inner join kek_page on kek_revision.rev_page = kek_page.page_id order by rev_timestamp ASC ;
+
+// ========== ICONS
+Add a style for: .oo-ui-icon-articlesJESUS
+url("some url to icon / data:...")
+
+// ======================================================================================
+// Button clicking for edit
+
+
+ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
+	var command = this.getCommand();
+
+	if ( command ) {
+		command.execute( this.context.getSurface(), undefined, 'context' );
+		this.emit( 'command' );
+	}  // <<-------------------------------- RECOMMEND an ELSE; and output to console log that missing command for Context item XXXX
+};
+
+
+ve.ui.ContextItem.prototype.getCommand = function () {
+	return this.context.getSurface().commandRegistry.lookup( this.constructor.static.commandName );
+};
+
+// commandName is the CE context items name
+
+// Fillibutster:
+//   71 (1467.31ms-1470.99ms) VeUiLinearContextItem.onEditButtonClick()
+//   72 (1469.38ms-1470.49ms) VeUiContextItem.getCommand()--->"(undefined)"--->"(undefined)"
+//
+
+// ======================================================================================
+ve.ui.commandRegistry.register(
+    new ve.ui.Command(
+        'mwDrawIOMenu', 'window', 'open',
+        { args: [ 'mwDrawIOXXX' ], supportedSelections: [ 'linear' ] }
+    )
+);
+
+#### MAPS TO
+
+ve.ui.MWDrawIODialog.static.name = 'mwDrawIOXXX';
+
+
+// ====================================== MAPPING CE to UI ===============================
+
+./ve.ui.MWDrawIODialogTool.js:        'mwDrawIOCMD_ContextEdit', 'window', 'open',
+./ve.ui.MWDrawIOContextItem.js:ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIOCMD_ContextEdit';
+
+// ====================================== MAPPING DM -> CE ===============================
+
+// LMP> Must match the VE.DM type
+ve.ce.MWDrawIONode.static.name = 'mwDrawIO_CONTEXT2';
+
+//
+ve.dm.MWDrawIOTransclusionNode2.static.name = 'mwDrawIO_CONTEXT2';
+ve.dm.MWDrawIOTransclusionNode2.static.inlineType = 'mwDrawIO_CONTEXT2';
+ve.dm.MWDrawIOTransclusionNode2.static.blockType = 'mwDrawIO_CONTEXT2';
+
+OTHERWISE ERROR:
+Uncaught Error: No class registered by that name: mwDrawIOCMD_ContextEdit
+    at VeCeNodeFactory.OO.Factory.create (oojs.jquery.js?e3185:1709)
+    at VeCeNodeFactory.ve.ce.NodeFactory.createFromModel (ve.ce.NodeFactory.js?adac2:82)
+    at VeCeDocumentNode.ve.ce.BranchNode.onSplice (ve.ce.BranchNode.js?089a8:215)
+    at VeCeDocumentNode.VeCeBranchNode (ve.ce.BranchNode.js?089a8:35)
+    at new VeCeDocumentNode (ve.ce.DocumentNode.js?9deea:23)
+    at new VeCeDocument (ve.ce.Document.js?c2b72:19)
+    at new VeCeSurface (ve.ce.Surface.js?42136:31)
+    at VeUiMWSurface.ve.ui.Surface.createView (ve.ui.Surface.js?816c1:300)
+    at VeUiMWSurface.VeUiSurface (ve.ui.Surface.js?816c1:78)
+    at new VeUiMWSurface (ve.ui.MWSurface.js?c79f9:17)
+
+
+// DM is mapped to a ve.UI.Context using
+ve.ui.MWDrawIOContextItem.static.modelClasses = [ ve.dm.MWDrawIOTransclusionNode2 ];
+
+
+// FIXME: NOTE: DM classes of same type results in NO Context menu
+
+
+// CE is mapped to a window command via this>
+ve.ui.MWDrawIOContextItem.static.commandName = 'mwDrawIO_CONTEXT2';
+
+// Window comamnd like this
+ve.ui.commandRegistry.register(
+    new ve.ui.Command(
+        'mwDrawIO_CONTEXT2', 'window', 'open',
+
+        // Dialog to open
+        { args: [ 'mwDrawIOXXX' ], supportedSelections: [ 'linear' ] }
+    )
+);
+
+
+
+NOTE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+if ve.ui._____ContextItem.static.name = 'mwDrawIOD' ; isnt unique This
+will fail to bring then it will not bring up the EDIT overlay.
+
+See NOTE#4 about how the DM to CE lookup is done.
+
+
+
+
+
+
+// ====================================== registerCommand ===============================
+
+This is where the register command takes action from;  ve.ui.commandRegistry.register( 'meDrawIOMenuItem' ....
+Which is linked to the ;   ve.ui.MWDrawIODialogTool.static.commandName = 'mwDrawIOMenuItem';
+
+new ve.ui.Command(
+			'mwDrawIOTag',  ---> Mapped to the DialogTool
+			'window', 'open', ---> Mapped to Internal MediaWiki stuff
+			{ args: [ 'mwDrawIOTag2' ], supportedSelections: [ 'linear' ] } ---> Mapped to registered Window; SEE WINDOW FACTORY
+		)
+
+/**
+ * Check if an action supports a method.
+ *
+ * @param {string} action Name of action
+ * @param {string} method Name of method
+ * @return {boolean} The action supports the method
+ */
+ve.ui.ActionFactory.prototype.doesActionSupportMethod = function ( action, method ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, action ) ) {
+		return this.registry[ action ].static.methods.indexOf( method ) !== -1;
+	}
+	throw new Error( 'Unknown action: ' + action );
+};
+
+// this.registry
+{annotation: ƒ, blockquote: ƒ, content: ƒ, format: ƒ, history: ƒ, …}
+	     annotation: ƒ VeUiAnnotationAction()
+	     blockquote: ƒ VeUiBlockquoteAction()
+	     content: ƒ VeUiContentAction()
+	     format: ƒ VeUiFormatAction()
+	     history: ƒ VeUiHistoryAction()
+	     indentation: ƒ VeUiIndentationAction()
+	     link: ƒ VeUiMWLinkAction( surface )
+	     list: ƒ VeUiListAction()
+	     mwSaveDialog: ƒ VeUiMWSaveDialogAction()
+	     mwcite: ƒ VeUiMWCitationAction()
+	     table: ƒ VeUiTableAction()
+	     window: ƒ VeUiWindowAction()
+	     __proto__: Object
+
+// action=woof ;  this.registry[ action ].static.methods
+   (3) ["open", "close", "toggle"]
+       0: "open"
+       1: "close"
+       2: "toggle"
+       length: 3
+       __proto__: Array(0)
+
+// ====================================== WINDOW FACTORY =====================================
+
+ve.ui.WindowAction.prototype.open = ...
+  windowType = this.getWindowType( name ) ...  // name="mwYourModuleNameTag"
+
+
+// ====================================== WINDOW FACTORY =====================================
+
+/**
+ * Get the specified window type
+ *
+ * @param {string} name Window name
+ * @return {string|null} Window type: 'inspector', 'toolbar' or 'dialog'
+ */
+ve.ui.WindowAction.prototype.getWindowType = function ( name ) {
+	var windowClass = ve.ui.windowFactory.lookup( name );    <<------------ CAN BE UNDEFINED, if no UI is registered OR registered wrong class in UI
+	if ( windowClass.prototype instanceof ve.ui.FragmentInspector ) {
+		return 'inspector';
+	} else if ( windowClass.prototype instanceof ve.ui.ToolbarDialog ) {
+		return 'toolbar';
+	} else if ( windowClass.prototype instanceof OO.ui.Dialog ) {
+		return 'dialog';
+	}
+	return null;
+};
+
+
+// ===========================================================================================
+//
+// NOTE#4 : Focus path that results in when a focus click;  matching the DM to CE
+//
+
+ve.ce.FocusableNode.prototype.onFocusableMouseDown = function ( e ) {
+
+ve.ui.DesktopContext.prototype.afterContextChange = function () {
+
+ve.ui.LinearContext.prototype.afterContextChange = function () {
+
+ve.ui.LinearContext.prototype.getRelatedSources = function () {
+ve.ui.LinearContext.prototype.getRelatedSourcesFromModels
+
+// <--------------------------------- THIS -------------------------->
+ve.ui.ModeledFactory.prototype.getRelatedItems() {
+   // ....
+   model = VeDmMWDrawIOTransclusionNode2 ;
+   
+   ...
+   
+   classes = collect( model );  // <--- this is classes that match = [ VeUiMWXXXXXXContextItem, ... ];
+   
+   // ....
+	if ( candidate.static.isCompatibleWith( model ) ) {
+	   ...
+
+}
+
+function collect( model )
+		for ( name in registry ) {    // name==transclusion / name==mw... (model=VeDmMWDrawIOTransclusionNode2 )
+		 if ( candidate.static.isCompatibleWith( model ) ) {
+             .....
+
+
+ve.ui.ContextItem.static.isCompatibleWith = function ( model ) {
+	return ve.isInstanceOfAny( model, this.modelClasses );
+};
+
+
+
+ve.isInstanceOfAny = function ( subject, classes ) {
+	var i = classes.length;
+
+	while ( classes[ --i ] ) {
+		if ( subject instanceof classes[ i ] ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+
+
+
+// ========================================================================================================
+
+1. Edit button click
+ve.ui.LinearContextItem.prototype.onEditButtonClick = function () {
+	var command = this.getCommand();
+
+	if ( command ) {
+		command.execute( this.context.getSurface(), undefined, 'context' );
+		this.emit( 'command' );
+	}
+};
+
+// ....
+
+ve.ui.ContextItem.prototype.getCommand = function () {
+	return this.context.getSurface().commandRegistry.lookup( this.constructor.static.commandName );
+};
+
+// this.constructor.static.commandName = "mwDrawIOCMD_ContextEditBlockExtension"
+
+
+// ...
+ve.ui.WindowAction.prototype.open = function ( name, data, action ) {
+	name="DrawIOYYY";
+
+
+
+
+
+// ========================================================================================================
+//
+//
+Uncaught TypeError: Cannot read property 'prototype' of undefined
+    at VeUiWindowAction.ve.ui.WindowAction.getWindowType (ve.ui.WindowAction.js?2d683:234)
+    at VeUiWindowAction.ve.ui.WindowAction.open (ve.ui.WindowAction.js?2d683:44)
+    at VeUiMWSurface.ve.ui.Surface.execute (ve.ui.Surface.js?816c1:652)
+    at VeUiCommand.ve.ui.Command.execute (ve.ui.Command.js?17574:55)
+    at VeUiMWDrawIOBlockExtensionContextItem.ve.ui.LinearContextItem.onEditButtonClick (ve.ui.LinearContextItem.js?2aef2:163)
+    at OoUiButtonWidget.OO.EventEmitter.emit (oojs.jquery.js?e3185:876)
+    at OoUiButtonWidget.OO.ui.mixin.ButtonElement.onClick (ButtonElement.js:153)
+    at HTMLAnchorElement.dispatch (jquery.js?11c05:5237)
+    at HTMLAnchorElement.elemData.handle (jquery.js?11c05:5044)

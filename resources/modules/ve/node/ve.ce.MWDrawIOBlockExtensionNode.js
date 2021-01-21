@@ -336,26 +336,18 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.getAttributeChanges = function ( widt
 
     console.log("START VeCeMWDrawIOBlockExtensionNode.getAttributeChanges #################################################"  );
 
-    
     console.log( width);
     console.log( height);
     console.log( mwData );
     console.log( mwData.attrs ); // FIXME: attrs is underfined, why?
-    console.log( mwData.parts[0] ); // FIXME: attrs is underfined, why?
 
     console.log("END VeCeMWDrawIOBlockExtensionNode.getAttributeChanges #################################################"  );
 
     // FIXME: LMP: These attrs dont exist; the actual type is mwData.parts
     debugger;
-	// mwData.attrs.width = width.toString();
-	// mwData.attrs.height = height.toString();
-    mwData.parts[0].template.params.width = width.toString();
-    mwData.parts[0].template.params.height = height.toString();
+	mwData.attrs.width = width.toString();
+	mwData.attrs.height = height.toString();
 
-    // FIXME:LMP: PARSOID ERROR
-    // should be mwData.parts[0].template.params.width.wt = width.toString();
-    // should be mwData.parts[0].template.params.height.wt = height.toString();
-    
 	return { mw: mwData };
 };
 
@@ -366,7 +358,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.onMapFocus = function () {
 	if ( !this.requiresInteractive() ) {
         // FIXME: Do someting on focus selection?
         debugger;
-        
+
 		// Preload larger static map for resizing
         //$( '<img>' ).attr( 'src', this.model.getUrl( 1000, 1000 ) );
 
