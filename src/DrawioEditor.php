@@ -6,8 +6,10 @@ use Config;
 use File;
 use MediaWiki\MediaWikiServices;
 use Parser;
-use ParserOutput;
 use RequestContext;
+
+// Used by Extension Tag
+use ParserOutput;
 use PPFrame;
 
 class DrawioEditor {
@@ -28,47 +30,64 @@ class DrawioEditor {
 	}
 
 	/**
-	 * @param Parser &$parseExtension
-	 * @param string|null $name
-	 * @return array
+	 * Parser hook handler for <drawio>
+	 *
+	 * @param string|null $data A string with the content of the tag, or null.
+	 * @param array $attribs The attributes of the tag.
+	 * @param Parser $parser Parser instance available to render
+	 *                             wikitext into html, or parser methods.
+	 * @param PPFrame $frame Can be used to see what template
+	 *                             arguments ({{{1}}}) this hook was used with.
+	 *
+	 * @return string HTML to insert in the page.
 	 */
-    public function parseExtension( $input, array $args, Parser $parser, PPFrame $frame ) {
+	public function parseExtension( $data, array $attribs, Parser $parser, PPFrame $frame ) {
+		// Extract name as option from tag <drawio name=FileName .../>
+		$name = array_key_exists( 'filename', $attribs )
+			? $attribs[ 'filename' ]
+			: null;
 
-        
-        // <drawio name=FileName/>
-        $name = array_key_exists( 'name', $args )
-            ? $args[ 'name' ]
-            : $this->config->get( 'DrawioEditorDefaultName' );
-
-        wfDebugLog( 'DRAWIO', "Enter parse for Extension:".$name ) ;
-
-        return $this->parse( $parser, $name, $args );
-    }
-    
+		// Call general parse-generator routine
+		return $this->parse( $parser, $name, $attribs );
+	}
 
 	/**
-	 * @param Parser &$parseLegacyParserFunc
-	 * @param string|null $name
-	 * @return array
+	 * Parser hook handler for {{drawio}}
+	 *
+	 * @param Parser &$parser Parser instance available to render
+	 *                             wikitext into html, or parser methods.
+	 * @param string|null $name File name of chart.
+	 *
+	 * @return array HTML to insert in the page.
 	 */
-	public function parseLegacyParserFunc( &$parser, $name = null ) {
-
+	public function parseLegacyParserFunc( Parser &$parser, $name = null ) {
 		/* parse named arguments */
 		$opts = [];
 		foreach ( array_slice( func_get_args(), 2 ) as $rawopt ) {
 			$opt = explode( '=', $rawopt, 2 );
 			$opts[ trim( $opt[ 0 ] ) ] = count( $opt ) === 2 ? trim( $opt[ 1 ] ) : true;
-        }
-        return $this->parse( $parser, $name, $opts );
-    }
+		}
 
-    public function parse( &$parser, $name, $opts ) {
+		// Call general parse-generator routine
+		return $this->parse( $parser, $name, $opts );
+	}
 
-        wfDebugLog( 'DRAWIO', "Enter parse for:".$name ) ;
-
+	/**
+	 * Generates the HTML required to embed a SVG/PNG DrawIO diagram, supports
+	 * a few formatting options to control with width/height, and image format.
+	 *
+	 * @param Parser &$parser Parser instance available to render
+	 *                             wikitext into html, or parser methods.
+	 * @param string|null $name File name of chart.
+	 * @param array $opts Further attributes as associative array:
+	 *                             width, height, max-height, type, interactive.
+	 *
+	 * @return array HTML to insert in the page.
+	 */
+	public function parse( &$parser, $name, $opts ) {
 		/* disable caching before any output is generated */
-        $parser->getOutput()->updateCacheExpiry( 0 );
-        
+		$parser->getOutput()->updateCacheExpiry( 0 );
+
 		$opt_type = array_key_exists( 'type', $opts )
 			? $opts[ 'type' ]
 			: $this->config->get( 'DrawioEditorImageType' );
@@ -111,25 +130,22 @@ class DrawioEditor {
 		$name = wfStripIllegalFilenameChars( $name );
 		$dispname = htmlspecialchars( $name, ENT_QUOTES );
 
-        /* random id to reference html elements */
-        //FIXME:LMP Boxes get rand ids, for now make it constant, this needs fixing in ve.X classes
-        // $id = mt_rand();
+		/* random id to reference html elements */
+		$id = mt_rand();
+		//FIXME:LMP Boxes get rand ids, for now make it constant, this needs fixing in ve.X classes
 		$id = 775430669;
 
 		/* prepare image information */
-        $img_name = $name . ".drawio." . $opt_type;
-        
-        $img = $this->services->getRepoGroup()->findFile( $img_name );       
+		$img_name = $name . ".drawio." . $opt_type;
+		$img = $this->services->getRepoGroup()->findFile( $img_name );
 		if ( $img ) {
-            // FIXME: LMP: Not sure why this is needed, mayve findFile is caching stomething;
-            // REF; https://doc.wikimedia.org/mediawiki-core/REL1_35/php/LocalFile_8php_source.html#l01332
-            // REF; https://github.com/LucienMP/mediawiki-extensions-DrawioEditor
-            
-            $img->resetHistory();
+			/* Resets file history to newest if there is more than one instance of same chart on a page */
+			// REF; https://doc.wikimedia.org/mediawiki-core/REL1_35/php/LocalFile_8php_source.html#l01332
+			$img->resetHistory();
 
 			$historyLine = $img->nextHistoryLine();
-            $img_url = $img->getViewUrl();
-            
+			$img_url = $img->getViewUrl();
+
 
             /* FIXME* LMP: Something wrong with the history lookup, almost like its cached...
             // FIXME: LMP: Notice: Undefined property: stdClass::$img_timestamp in /home/lucienmp/Wiki/KekWiki/mediawiki-1.35.0/extensions/DrawioEditor/src/DrawioEditor.php on line 95
@@ -180,7 +196,7 @@ class DrawioEditor {
    'oi_metadata' => 'a:6:{s:10:"frameCount";i:0;s:9:"loopCount";i:1;s:8:"duration";d:0;s:8:"bitDepth";i:8;s:9:"colorType";s:16:"truecolour-alpha";s:8:"metadata";a:1:{s:15:"_MW_PNG_VERSION";i:1;}}',
             */
 
-            $img_url_ts = $img_url . '?ts=' . ( $historyLine !== false ? $historyLine->img_timestamp : '' );
+			$img_url_ts = $img_url . '?ts=' . ( $historyLine !== false ? $historyLine->img_timestamp : '' );
 			$img_desc_url = $img->getDescriptionUrl();
 			$img_height = $img->getHeight() . 'px';
 			$img_width = $img->getWidth() . 'px';
@@ -206,11 +222,15 @@ class DrawioEditor {
 			$opt_width === 'chart' ? 'true' : 'false',
 			$opt_max_width === 'chart' ? 'true' : 'false' );
 
-		/* output begin */
-		$output = '<div>';
+			// LMP>FIXME
+			$img_style = sprintf( 'height: %s; width: %s; max-width: %s;',
+			$css_img_height, $css_img_width, $css_img_max_width );
 
-		/* div around the image */
-		$output .= '<div id="drawio-img-box-' . $id . '">';
+		/* output begin */
+		$output = '<div class="drawio-container" style="'.$img_style.'">';
+
+		/* div around the image; for parser-funciton we need to detect class  */
+		$output .= '<div class="drawio-container" id="drawio-img-box-' . $id . '">';
 
 		/* display edit link */
 		if ( !$this->isReadOnly( $img ) ) {

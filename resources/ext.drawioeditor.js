@@ -1,5 +1,5 @@
 
-function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth) {
+function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth, isEDITLinkVersion=false) {
     var that = this;
     
     this.id = id;
@@ -46,7 +46,7 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
     this.iframeOverlay.hide();
  
     /* FIXME:LMP This code depends on the iframe being EDIT link, or VE editor */
-    isEDITLinkVersion=false;
+    //isEDITLinkVersion=false;
 
     if( isEDITLinkVersion ) {
         this.iframe = $('<iframe>', {
@@ -222,7 +222,7 @@ DrawioEditor.prototype.uploadToWiki = function(blob) {
 			} else {
 				that.showDialog('Save failed', 
 					'Upload to wiki failed!' +
-				'<br>Error: ' + error +
+				'<br>Error: ' + data.error.info +
 				'<br>Check javascript console for details.');
 			}
         });
@@ -297,11 +297,13 @@ DrawioEditor.prototype.initCallback = function () {
 var editor;
 
 window.editDrawio = function(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth) {
+    debugger;
+
     //FIXME: Added only on edit
     window.addEventListener('message', drawioHandleMessage);
 
     if (!editor) {
-        editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
+        editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth, true);
     } else {
         alert("Only one DrawioEditor can be open at the same time!");
     }
@@ -313,10 +315,10 @@ function drawioHandleMessage(e) {
     // we only act on event coming from draw.io iframes
     if (e.origin != 'https://embed.diagrams.net')
         return;
-    
+
     if (!editor)
         return;
-       
+
     evdata = JSON.parse(e.data);
 
     switch(evdata['event']) {
@@ -337,7 +339,10 @@ function drawioHandleMessage(e) {
 
         case 'exit':
             editor.exitCallback();
-	    // editor is null after this callback
+            // editor is null after this callback
+
+            // FIXME: Remove event handler
+            window.removeEventListener('message',drawioHandleMessage);
             break;
 
         default:
