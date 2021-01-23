@@ -109,7 +109,9 @@ DrawioEditor.prototype.updateImage = function (imageinfo) {
 }
 
 DrawioEditor.prototype.sendMsgToIframe = function(data) {
-    this.iframeWindow.postMessage(JSON.stringify(data), 'https://embed.diagrams.net');
+    // FIXME: LMP: Disabled for diagrams
+//  this.iframeWindow.postMessage(JSON.stringify(data), 'https://embed.diagrams.net');
+    this.iframeWindow.postMessage(JSON.stringify(data), 'http://localhost');
 }
 
 DrawioEditor.prototype.showDialog = function(title, message) {
@@ -184,7 +186,11 @@ DrawioEditor.prototype.loadImageFromDataURL = function(type, dataurl) {
 DrawioEditor.prototype.loadImage = function() {
     if (!this.imageURL.length) {
         // just load without data if there's no current image
-        this.sendMsgToIframe({ action: 'load' });
+        this.sendMsgToIframe(
+            {
+                action: 'load',
+                autosave: 1     // FIXME: LMP: Causes update event notification on every change
+            });
 	return;
     }
     // fetch image from wiki. it must contain both image data and

@@ -51,17 +51,23 @@ ve.ui.MWDrawIOBlockExtensionDialog.static.modelClasses = [ ve.dm.MWDrawIOBlockEx
 // ########################################################################################################################
 
 ve.ui.MWDrawIOBlockExtensionDialog.prototype.drawioHandleMessage = function (eJqueryEvent) {
-	console.log("drawioHandleMessage");
 
+	// FIXME:LMP: Display event in console
+	var date = new Date();
+	e = eJqueryEvent.originalEvent;
+	evdata = JSON.parse(e.data);
+	console.log( date.toLocaleTimeString() + "drawioHandleMessage: [" + evdata['event'] + "]" );
 	debugger;
 
 	// FIXME:LMP:Extract original event from jquery wrapper
 	e = eJqueryEvent.originalEvent;
 
+	// FIXME: LMP: Disable for debugging of local diagrams.net
+/*
 	// we only act on event coming from draw.io iframes
 	if (e.origin != 'https://embed.diagrams.net')
 		return;
-
+*/
 	if (!this.editor)
 		return;
 
@@ -90,6 +96,10 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.drawioHandleMessage = function (eJq
 
 		case 'openLink':
 			// Help>About
+			break;
+
+		case 'autosave':
+			// FIXME: Update and set the MW apply button chages here
 			break;
 
 		default:
@@ -246,8 +256,8 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
-    // Where the dialog is going to
-    var url = 'https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json';
+    // URL is going to be set later during setup
+    var url = 'about:blank';
 
     var panel2 = $( '<iframe source="'+url+'">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
     panel2.attr('id', 'DrawIOContainer');
@@ -472,6 +482,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
     document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
+
+	// FIXME: For debugging version
+    document.getElementById('DrawIOContainer').src="http://localhost/drawio.git/src/main/webapp/index.html?dev=1&embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
 
 	return ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.getReadyProcess.call( this, data )
