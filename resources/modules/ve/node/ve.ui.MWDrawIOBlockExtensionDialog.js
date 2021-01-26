@@ -272,7 +272,6 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     );
 
 
-
     /* ******************************* SART OF LAYOUT ******************************* */
     /* ******************************* SART OF LAYOUT ******************************* */
     /* ******************************* SART OF LAYOUT ******************************* */
@@ -283,10 +282,10 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
         this.typeFieldset.$element
     );
 
-
     diagramTabPanel.$element.append(
         panel2
     );
+    console.log("this.indexLayout.$element",this.indexLayout.$element);
 
 
     this.$body.append( this.indexLayout.$element );
@@ -296,8 +295,8 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     debugger;
 
     // id=random
-    var id=775430669, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
-    this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
+    // var id=775430669, filename="ChartName5", type="png", interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    // this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
 
 
     // window.addEventListener('message', drawioHandleMessage);
@@ -478,13 +477,17 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
     // BAD: Doesnt work
     //$('#ve-ui-mwWavedromDialog-waveWidget').src = "" ;
     //$('#DrawIOContainer').src = "https://...." ;
+    var mwData = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
+    var id=775430669, filename=mwData.filename ? mwData.filename : 'ChartName5', type=mwData.type ? mwData.type : 'png', interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+
+    this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
 
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
     document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
 	// FIXME: For debugging version
-    document.getElementById('DrawIOContainer').src="http://localhost/drawio.git/src/main/webapp/index.html?dev=1&embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
+    document.getElementById('DrawIOContainer').src="http://localhost/Projects/mediawiki/mediawiki-1.35.0/extensions/drawio/src/main/webapp/index.html?dev=1&embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
 
 	return ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.getReadyProcess.call( this, data )
