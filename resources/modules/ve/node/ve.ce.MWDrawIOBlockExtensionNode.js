@@ -165,14 +165,12 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = function () {
 /**
  * Setup an interactive map
  */
-ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = function () {
+ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
 
 	var mwData = this.model.getAttribute( 'mw' ),
 		mwAttrs = mwData && mwData.attrs,
         node = this;
         debugger;
-	console.log("mwData",mwData.attrs.filename);
-	console.log("mwAttrs",mwAttrs);
 	/*
 	this.map = mw.loader.require( 'ext.kartographer.box' ).map( {
 		container: this.$element[ 0 ],
@@ -194,18 +192,34 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = function () {
     // FIXME:LMP: This is hardcoded to my example ChartName5.drawio.png as an example
     var filename = mwData.attrs.filename;
     var type = mwData.attrs.type;
-    var loc = window.location.pathname;
-	var dir = loc.substring(0, loc.lastIndexOf('/'));
-	var dir = dir.substring(0, dir.lastIndexOf('/'));
+
+	var params = {
+		action: 'query',
+		format: 'json',
+		prop: 'imageinfo',
+		titles: 'File:'+filename+'.drawio.'+type,
+		iiprop: [ 'timestamp', 'user', 'url' ]
+	},
+	api = new mw.Api();
+
+    var src = "";
+
+	await api.get( params ).done( function ( data ) {
+		var pages = data.query.pages,
+			p;
+		for ( p in pages ) {
+			console.log( pages[ p ].imageinfo[0].url );
+			src = pages[ p ].imageinfo[0].url;
+		}
+	} );
     
-    var src = dir+"/images/2/21/"+filename+".drawio."+type+"?ts=20201123073750";
     var title = "drawio: "+filename;
 
     this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );
     console.log("this.$wavedromdiv",this.$wavedromdiv);
 	this.$wavedromdiv.appendTo( scaledcontainer2 ) ;
 	$( '<div id=WaveDrom_Display_9998>' ).appendTo( scaledcontainer2 ); // LMP-FIXME: Needs to be something more concrete, there could be 9998 waves on a page
-    console.log("scaledcontainer2",scaledcontainer2);
+    
 
 	this.map = this.$wavedromdiv;
 
