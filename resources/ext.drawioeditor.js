@@ -150,6 +150,7 @@ DrawioEditor.prototype.downloadFromWiki = function() {
         if (this.readyState == 4) {
 	    if (this.status == 200) {
                 var res = this.response;
+                console.log("img res",res);
                 var fr = new FileReader();
                 fr.onload = function(ev) { that.loadImageFromDataURL(res.type, ev.target.result); };
                 fr.readAsDataURL(res);
@@ -164,8 +165,10 @@ DrawioEditor.prototype.downloadFromWiki = function() {
 
     }
     xhr.open('GET', this.imageURL);
+    // console.log("xhr",xhr);
     xhr.responseType = 'blob';
     xhr.send();
+    console.log("xhr",xhr);
 }
 
 DrawioEditor.prototype.loadImageFromDataURL = function(type, dataurl) {
