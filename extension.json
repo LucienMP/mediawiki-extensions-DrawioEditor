@@ -100,9 +100,14 @@
 
 	"Hooks": {
 		"OutputPageParserOutput": "MediaWiki\\Extension\\DrawioEditor\\Hook\\OutputPageParserOutput\\AddModules::callback",
-		"ParserFirstCallInit": "MediaWiki\\Extension\\DrawioEditor\\Hook\\ParserFirstCallInit\\SetFunctionHook::callback"
+		"ParserFirstCallInit": "MediaWiki\\Extension\\DrawioEditor\\Hook\\ParserFirstCallInit\\SetFunctionHook::callback",
+		"ResourceLoaderGetConfigVars": "MediaWiki\\Extension\\DrawioEditor\\Hook\\ResourceLoaderGetConfigVars\\AddGlobals::callback"
 	},
 	"config": {
+		"DrawioEditorBaseURL": {
+			"value": "http://localhost/Projects/mediawiki/mediawiki-1.35.0/extensions/drawio/src/main/webapp/index.html",
+			"description": "URL to the DrawIO webapp"
+		},
 		"DrawioEditorImageType": {
 			"value": "svg"
 		},

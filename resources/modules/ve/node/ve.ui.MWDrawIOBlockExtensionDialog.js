@@ -484,11 +484,32 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
 
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
-    document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
+    //document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
 	// FIXME: For debugging version
-    document.getElementById('DrawIOContainer').src="http://localhost/Projects/mediawiki/mediawiki-1.35.0/extensions/drawio/src/main/webapp/index.html?dev=1&embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
+    //document.getElementById('DrawIOContainer').src="http://localhost/Projects/mediawiki/mediawiki-1.35.0/extensions/drawio/src/main/webapp/index.html?dev=1&embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
 
+	// FIXME: UI=min&saveAndExit=0 doenst work; dark/atlas only
+	//
+	//var url = "http://localhost/drawio.git/src/main/webapp/index.html?embed=1&proto=json";
+	var url = mw.config.get( 'wgDrawioEditorBaseURL' ) + "?" ;
+	//alert("some url:"+url);
+	url = url + "&embed=1";
+	url = url + "&proto=json";
+
+	// Enable development javascript
+	url = url + "&dev=1";
+
+	// Skin; dark, atlas, min
+	url = url + "&ui=atlas";
+
+	// Disable buttons, and menu for saving/exiting
+	url = url + "&saveAndExit=0&noExitBtn=1&noSaveBtn=1";
+
+	// Start with spinner
+	url = url + "&spin=1&modified=unsavedChanges";
+
+	document.getElementById('DrawIOContainer').src=url;
 
 	return ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.getReadyProcess.call( this, data )
 		.next( function () {
