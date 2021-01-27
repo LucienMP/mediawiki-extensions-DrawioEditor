@@ -177,9 +177,13 @@ DrawioEditor.prototype.loadImageFromDataURL = function(type, dataurl) {
 	    return;
         }
         if (this.imgType == 'svg') {
-            this.sendMsgToIframe({ action: 'load', xml: dataurl});
+            this.sendMsgToIframe({ action: 'load', xml: dataurl,
+                    autosave: 1,     // FIXME: LMP: Causes update event notification on every change
+                });
         } else if (this.imgType == 'png') {
-            this.sendMsgToIframe({ action: 'load', xmlpng: dataurl});
+            this.sendMsgToIframe({ action: 'load', xmlpng: dataurl,
+                    autosave: 1,     // FIXME: LMP: Causes update event notification on every change
+                });
         }
 }
 
