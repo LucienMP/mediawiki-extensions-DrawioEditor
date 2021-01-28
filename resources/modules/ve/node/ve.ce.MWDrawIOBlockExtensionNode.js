@@ -208,7 +208,6 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
 		var pages = data.query.pages,
 			p;
 		for ( p in pages ) {
-			console.log( pages[ p ].imageinfo[0].url );
 			src = pages[ p ].imageinfo[0].url;
 		}
 	} );
@@ -216,7 +215,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     var title = "drawio: "+filename;
 
     this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );
-    console.log("this.$wavedromdiv",this.$wavedromdiv);
+    
 	this.$wavedromdiv.appendTo( scaledcontainer2 ) ;
 	$( '<div id=WaveDrom_Display_9998>' ).appendTo( scaledcontainer2 ); // LMP-FIXME: Needs to be something more concrete, there could be 9998 waves on a page
     
@@ -372,8 +371,8 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.getAttributeChanges = function ( widt
 
     // FIXME: LMP: These attrs dont exist; the actual type is mwData.parts
     debugger;
-	mwData.attrs.width = width.toString();
-	mwData.attrs.height = height.toString();
+	mwData.attrs.width = width.toString()+'px';
+	mwData.attrs.height = height.toString()+'px';
 
 	return { mw: mwData };
 };

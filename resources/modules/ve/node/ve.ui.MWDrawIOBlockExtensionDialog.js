@@ -285,7 +285,6 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     diagramTabPanel.$element.append(
         panel2
     );
-    console.log("this.indexLayout.$element",this.indexLayout.$element);
 
 
     this.$body.append( this.indexLayout.$element );
