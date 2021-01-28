@@ -359,7 +359,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.onResizableResizing = function () {
 ve.ce.MWDrawIOBlockExtensionNode.prototype.getAttributeChanges = function ( width, height ) {
 
     var mwData = ve.copy( this.model.getAttribute( 'mw' ) );
-
+    
     console.log("START VeCeMWDrawIOBlockExtensionNode.getAttributeChanges #################################################"  );
 
     console.log( width);
@@ -371,8 +371,17 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.getAttributeChanges = function ( widt
 
     // FIXME: LMP: These attrs dont exist; the actual type is mwData.parts
     debugger;
-	mwData.attrs.width = width.toString()+'px';
-	mwData.attrs.height = height.toString()+'px';
+    // check which value attr have already
+    var newWidth = width.toString()+'px';
+    var newHeight = height.toString()+'px';
+    if(mwData.attrs.width !== undefined) {
+    	if(mwData.attrs.width.includes('%')) {
+    		newWidth = width.toString()+'%';
+    		newHeight = height.toString()+'%';
+    	}
+    }
+	mwData.attrs.width = newWidth;
+	mwData.attrs.height = newHeight;
 
 	return { mw: mwData };
 };
