@@ -46,7 +46,7 @@ ve.ui.commandRegistry.register(
         'mwDrawIOCMD_Insert', 'window', 'open',
 
         // Dialog to open
-        { args: [ 'mwDrawIO_TransclusionDialog' ], supportedSelections: [ 'linear' ] }
+        { args: [ 'mwDrawIO_ExtensionBlockDialog' ], supportedSelections: [ 'linear' ] }
     )
 );
 
