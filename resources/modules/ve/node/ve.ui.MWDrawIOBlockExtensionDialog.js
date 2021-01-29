@@ -99,6 +99,7 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.drawioHandleMessage = function (eJq
 			break;
 
 		case 'autosave':
+		this.actions.setAbilities( { done: true } );
 			// FIXME: Update and set the MW apply button chages here
 			break;
 
@@ -416,6 +417,10 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 	 * mwData.attrs updated results in "Apply Changes"
 	 *
 	 */
+	console.log("this.editor updatemxdata",this.editor);
+	if(this.editor) {
+		this.editor.saveCallback();
+	}
 	var center, scaled, latitude, longitude, zoom,
 		dimensions = // this.scalable.getBoundedDimensions(
 			this.dimensions.getDimensions()
@@ -480,7 +485,7 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
     var id=775430669, filename=mwData.filename ? mwData.filename : 'ChartName5', type=mwData.type ? mwData.type : 'png', interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
 
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
-
+    console.log("this.editor getreadyprocess",this.editor);
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
     //document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";

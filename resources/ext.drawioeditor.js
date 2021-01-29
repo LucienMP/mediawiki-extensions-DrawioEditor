@@ -204,9 +204,8 @@ DrawioEditor.prototype.loadImage = function() {
  
 DrawioEditor.prototype.uploadToWiki = function(blob) {
     var that = this;
-
 	var api = new mw.Api();
-    api.upload(blob, { filename: this.filename, ignorewarnings: true, format: 'json' } )
+    api.upload(blob, { filename: this.filename+'.drawio.png', ignorewarnings: 1, format: 'json' } )
         .done( function(data) {
 			if (!data.upload) {
 				if (data.error) {
