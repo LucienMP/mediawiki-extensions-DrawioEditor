@@ -121,9 +121,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.initialize.call( this );
 
 
-    /* ******************************* START OF TAB ******************************* */
-    /* ******************************* START OF TAB ******************************* */
-    /* ******************************* START OF TAB ******************************* */
+    /* ******************************* START OF TAB ROOT ******************************* */
+    /* ******************************* START OF TAB ROOT ******************************* */
+    /* ******************************* START OF TAB ROOT ******************************* */
 
 	// Layout for the formula inserter (formula tab panel) and options form (options tab panel)
 	this.indexLayout = new OO.ui.IndexLayout();
@@ -144,9 +144,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	] );
 
 
-	/* ******************************* START OF OPTIONS ******************************* */
-	/* ******************************* START OF OPTIONS ******************************* */
-	/* ******************************* START OF OPTIONS ******************************* */
+	/* ******************************* START OF OPTIONS TAB ******************************* */
+	/* ******************************* START OF OPTIONS TAB ******************************* */
+	/* ******************************* START OF OPTIONS TAB ******************************* */
 
 	/* GitHub README.md
 	 * 	https://github.com/wikimedia/mediawiki-extensions-DrawioEditor/blob/master/README.md#usage
@@ -254,9 +254,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     // FIXME: Selec the enable/disable based on tag values
 
 
-    /* ******************************* SART OF EDITOR ******************************* */
-    /* ******************************* SART OF EDITOR ******************************* */
-	/* ******************************* SART OF EDITOR ******************************* */
+    /* ******************************* START OF EDITOR TAB ******************************* */
+    /* ******************************* START OF EDITOR TAB ******************************* */
+	/* ******************************* START OF EDITOR TAB ******************************* */
 
 	// Filename input
 	this.idInput = new OO.ui.TextInputWidget();
@@ -282,9 +282,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     panel3.height( '80%' );
 	panel3.width( '80%' );
 
-    /* ******************************* SART OF LAYOUT ******************************* */
-    /* ******************************* SART OF LAYOUT ******************************* */
-    /* ******************************* SART OF LAYOUT ******************************* */
+    /* ******************************* START OF LAYOUT ******************************* */
+    /* ******************************* START OF LAYOUT ******************************* */
+    /* ******************************* START OF LAYOUT ******************************* */
 
     optionsTabPanel.$element.append(
         this.dimensionsField.$element,
