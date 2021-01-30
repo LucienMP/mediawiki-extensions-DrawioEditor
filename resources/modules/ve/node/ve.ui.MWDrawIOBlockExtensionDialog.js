@@ -135,6 +135,7 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 
 	optionsTabPanel = new OO.ui.TabPanelLayout( 'options', {
 			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-options' ),
+			classes: [ 'DrawioEditorFieldTest' ],
 			padded: true
 	} );
 
