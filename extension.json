@@ -77,6 +77,8 @@
 				"visualeditor-mwdrawio-pulldownB",
 				"visualeditor-mwdrawio-pulldownC",
 
+				"visualeditor-mwdrawio-tabtitle-edit",
+				"visualeditor-mwdrawio-tabtitle-options",
 				"visualeditor-mwdrawio-filename"
 			],
 			"targets": [

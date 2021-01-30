@@ -129,12 +129,12 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	this.indexLayout = new OO.ui.IndexLayout();
 
 	diagramTabPanel = new OO.ui.TabPanelLayout( 'diagram', {
-			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-formula' ),
+			label: ve.msg( 'visualeditor-mwdrawio-tabtitle-edit' ),
 			padded: true
 	} );
 
 	optionsTabPanel = new OO.ui.TabPanelLayout( 'options', {
-			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-options' ),
+			label: ve.msg( 'visualeditor-mwdrawio-tabtitle-options' ),
 			classes: [ 'DrawioEditorFieldTest' ],
 			padded: true
 	} );
