@@ -22,6 +22,7 @@
 	"visualeditor-mwdrawio-pulldownB": "Option B; ...",
 	"visualeditor-mwdrawio-pulldownC": "Option C; ...",
 
+	"visualeditor-mwdrawio-filename": "chart filename",
 
 	"visualeditor-mwdrawiocontextitem-nosupport": "This map contains dynamic features, and for now can only be edited in source mode.",
 	"visualeditor-mwdrawiocontextitem-title": "DrawIO Edit"

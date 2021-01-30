@@ -75,7 +75,9 @@
                 "visualeditor-mwdrawio-style-title-help",
 				"visualeditor-mwdrawio-pulldownA",
 				"visualeditor-mwdrawio-pulldownB",
-				"visualeditor-mwdrawio-pulldownC"
+				"visualeditor-mwdrawio-pulldownC",
+
+				"visualeditor-mwdrawio-filename"
 			],
 			"targets": [
 				"desktop",
@@ -105,7 +107,7 @@
 	},
 	"config": {
 		"DrawioEditorBaseURL": {
-			"value": "http://localhost/Projects/mediawiki/mediawiki-1.35.0/extensions/drawio/src/main/webapp/index.html",
+			"value": "http://localhost/drawio.git/src/main/webapp/",
 			"description": "URL to the DrawIO webapp"
 		},
 		"DrawioEditorImageType": {

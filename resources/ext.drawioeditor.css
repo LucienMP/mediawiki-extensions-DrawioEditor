@@ -24,3 +24,7 @@
   padding:5px;
 }
 
+.DrawioEditorFieldTest {
+  background-color: rgba(1, 1, 1, 0.1);
+  max-width: 30em;
+}

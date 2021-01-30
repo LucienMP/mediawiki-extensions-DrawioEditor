@@ -256,22 +256,31 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 
     /* ******************************* SART OF EDITOR ******************************* */
     /* ******************************* SART OF EDITOR ******************************* */
-    /* ******************************* SART OF EDITOR ******************************* */
+	/* ******************************* SART OF EDITOR ******************************* */
+
+	// Filename input
+	this.idInput = new OO.ui.TextInputWidget();
+	idField = new OO.ui.FieldLayout( this.idInput, {
+		align: 'left',
+		classes: [ 'DrawioEditorFieldTest' ],
+		label: ve.msg( 'visualeditor-mwdrawio-filename' )
+	} );
+
+
+
     // URL is going to be set later during setup
     var url = 'about:blank';
 
     var panel2 = $( '<iframe source="'+url+'">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
     panel2.attr('id', 'DrawIOContainer');
     panel2.css( {'border':'1px solid black', 'border-radius': '5px'});
-    panel2.height( '80%' );
-    panel2.width( '80%' );
-	panel = new OO.ui.PanelLayout( {
-		padded: true,
-		expanded: false
-	} );
-	panel.$element.append(
-    );
+    panel2.height( '100%' );
+	panel2.width( '100%' );
 
+	var panel3 =$( '<div>' );
+	panel3.append( panel2 );
+    panel3.height( '80%' );
+	panel3.width( '80%' );
 
     /* ******************************* SART OF LAYOUT ******************************* */
     /* ******************************* SART OF LAYOUT ******************************* */
@@ -284,7 +293,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     );
 
     diagramTabPanel.$element.append(
-        panel2
+		idField.$element,
+		// panel2
+		panel3
     );
 
 
