@@ -212,20 +212,20 @@ DrawioEditor.prototype.uploadToWiki = function(blob) {
 						that.showDialog('Save failed',
 				   'The wiki returned the follwing error when uploading:<br>' +
 				   data.error.info);
-			} else {
+			    } else {
 						that.showDialog('Save failed',
 				   'The upload to the wiki failed.' +
 				   '<br>Check javascript console for details.');
-			}
-			console.log('upload to wiki failed');
-			console.log(data);
+			    }
+			    console.log('upload to wiki failed');
+			    console.log(data);
 			} else {
 				that.updateImage(data.upload.imageinfo);
 				that.hideSpinner();
 			}
         })
 		.fail( function(retStatus, data) {
-			if( retStatus == "exists" ){
+            if( retStatus == "exists" ){
 				that.updateImage(data.upload.imageinfo);
 				that.hideSpinner();
 			} else {

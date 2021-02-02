@@ -34,7 +34,7 @@ ve.ce.MWDrawIOBlockExtensionNode = function VeCeMWDrawIOBlockExtensionNode( mode
 	this.model.connect( this, { attributeChange: 'onAttributeChange' } );
 	this.connect( this,
 		{ focus: 'onMapFocus',
-//		resizing: 'onResizableResizing'
+		//		resizing: 'onResizableResizing'
 
 	 }
 	);
@@ -109,7 +109,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.onSetup = function () {
 /**
  * Update the map rendering
  */
-ve.ce.MWDrawIOBlockExtensionNode.prototype.update = function () {
+ve.ce.MWDrawIOBlockExtensionNode.prototype.update = async function () {
 	var requiresInteractive = true; //FIXME> this.requiresInteractive(),
 		align = ve.getProp( this.model.getAttribute( 'mw' ), 'attrs', 'align' ) ||
 			( this.model.doc.getDir() === 'ltr' ? 'right' : 'left' ),
@@ -141,6 +141,51 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = function () {
 			] ).then( this.setupMap.bind( this ) );
 			*/
 		} else if ( this.map ) {
+			// update image src in image
+				var mwData = this.model.getAttribute( 'mw' );
+				// var filename = mwData.attrs.filename;
+    			// var type = mwData.attrs.type;
+
+    // 			var params = {
+				// 	action: 'query',
+				// 	format: 'json',
+				// 	prop: 'imageinfo',
+				// 	titles: 'File:'+filename+'.drawio.'+type,
+				// 	iiprop: [ 'timestamp', 'user', 'url' ]
+				// },
+				// api = new mw.Api();
+
+			    var src = "";
+			    var src_time = "";
+
+				// await api.get( params ).done( function ( data ) {
+				// 	var pages = data.query.pages,
+				// 		p;
+				// 	for ( p in pages ) {
+				// 		src = pages[ p ].imageinfo[0].url;
+				// 		// src_time = pages[ p ].imageinfo[0].url+ '?ts=' + pages[ p ].imageinfo[0].timestamp;
+				// 		var timestamp = new Date().getTime();
+				// 		src_time = pages[ p ].imageinfo[0].url+ '?ts=' + timestamp;
+				// 	}
+				// } );
+
+				await this.callImageApi(mwData).then( function ( data ) {
+    				src = data;
+    				var timestamp = new Date().getTime();
+    				src_time = src+ '?ts=' + timestamp;
+    			});
+
+				// document.getElementById("drawio-img-775430669").src = src;
+				var images = document.getElementsByTagName("img");
+				for (var i = 0; i < images.length; i++) {
+    				var image = images[i];
+    				// console.log("src",src);
+    				if(image.getAttribute("id") == "drawio-img-775430669") {
+    					image.setAttribute("src",src_time);
+    				}
+				}
+				// console.log("images",images);
+			// update image src in image
 			this.updateGeoJson();
 			this.updateMapPosition();
 		}
@@ -156,8 +201,8 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = function () {
     debugger;
 	this.$element
 		.removeClass( 'tleft tright tnone' )
-//		.removeClass( 'mw-halign-none mw-halign-left mw-halign-center mw-halign-right' )
-//		.removeClass( 'floatleft center floatright' )
+		//		.removeClass( 'mw-halign-none mw-halign-left mw-halign-center mw-halign-right' )
+		//		.removeClass( 'floatleft center floatright' )
 		.addClass( alignClasses[ align ] )
 		.css( this.model.getCurrentDimensions() );
 };
@@ -166,7 +211,6 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = function () {
  * Setup an interactive map
  */
 ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
-
 	var mwData = this.model.getAttribute( 'mw' ),
 		mwAttrs = mwData && mwData.attrs,
         node = this;
@@ -192,29 +236,18 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     // FIXME:LMP: This is hardcoded to my example ChartName5.drawio.png as an example
     var filename = mwData.attrs.filename;
     var type = mwData.attrs.type;
-
-	var params = {
-		action: 'query',
-		format: 'json',
-		prop: 'imageinfo',
-		titles: 'File:'+filename+'.drawio.'+type,
-		iiprop: [ 'timestamp', 'user', 'url' ]
-	},
-	api = new mw.Api();
-
-    var src = "";
-
-	await api.get( params ).done( function ( data ) {
-		var pages = data.query.pages,
-			p;
-		for ( p in pages ) {
-			src = pages[ p ].imageinfo[0].url;
-		}
-	} );
     
+    var src = "";
+    var src_time = "";
+    await this.callImageApi(mwData).then( function ( data ) {
+    	src = data;
+    	var timestamp = new Date().getTime();
+    	src_time = src+ '?ts=' + timestamp;
+    });
+	
     var title = "drawio: "+filename;
 
-    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );
+    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );
     
 	this.$wavedromdiv.appendTo( scaledcontainer2 ) ;
 	$( '<div id=WaveDrom_Display_9998>' ).appendTo( scaledcontainer2 ); // LMP-FIXME: Needs to be something more concrete, there could be 9998 waves on a page
@@ -249,6 +282,32 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
 	*/
 
 };
+
+ve.ce.MWDrawIOBlockExtensionNode.prototype.callImageApi = async function (mwData) {
+	var filename = mwData.attrs.filename;
+    var type = mwData.attrs.type;
+    
+    var src = "";
+
+	var params = {
+		action: 'query',
+		format: 'json',
+		prop: 'imageinfo',
+		titles: 'File:'+filename+'.drawio.'+type,
+		iiprop: [ 'timestamp', 'user', 'url' ]
+	},
+	api = new mw.Api();
+
+	await api.get( params ).done( function ( data ) {
+		var pages = data.query.pages,
+			p;
+		for ( p in pages ) {
+			src = pages[ p ].imageinfo[0].url;
+		}
+	} );
+
+	return src;
+}
 
 /**
  * Update the GeoJSON layer from the current model state
@@ -335,7 +394,6 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.updateStatic = function ( width, heig
  * @inheritdoc ve.ce.ResizableNode
  */
 ve.ce.MWDrawIOBlockExtensionNode.prototype.onResizableResizing = function () {
-
 	// Mixin method
 	ve.ce.ResizableNode.prototype.onResizableResizing.apply( this, arguments );
 
@@ -357,7 +415,6 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.onResizableResizing = function () {
  * @inheritdoc ve.ce.ResizableNode
  */
 ve.ce.MWDrawIOBlockExtensionNode.prototype.getAttributeChanges = function ( width, height ) {
-
     var mwData = ve.copy( this.model.getAttribute( 'mw' ) );
     
     console.log("START VeCeMWDrawIOBlockExtensionNode.getAttributeChanges #################################################"  );

@@ -417,7 +417,6 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 	 * mwData.attrs updated results in "Apply Changes"
 	 *
 	 */
-	console.log("this.editor updatemxdata",this.editor);
 	if(this.editor) {
 		this.editor.saveCallback();
 	}
