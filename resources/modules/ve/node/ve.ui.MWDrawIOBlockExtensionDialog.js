@@ -121,20 +121,21 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	ve.ui.MWDrawIOBlockExtensionDialog.super.prototype.initialize.call( this );
 
 
-    /* ******************************* START OF TAB ******************************* */
-    /* ******************************* START OF TAB ******************************* */
-    /* ******************************* START OF TAB ******************************* */
+    /* ******************************* START OF TAB ROOT ******************************* */
+    /* ******************************* START OF TAB ROOT ******************************* */
+    /* ******************************* START OF TAB ROOT ******************************* */
 
 	// Layout for the formula inserter (formula tab panel) and options form (options tab panel)
 	this.indexLayout = new OO.ui.IndexLayout();
 
 	diagramTabPanel = new OO.ui.TabPanelLayout( 'diagram', {
-			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-formula' ),
+			label: ve.msg( 'visualeditor-mwdrawio-tabtitle-edit' ),
 			padded: true
 	} );
 
 	optionsTabPanel = new OO.ui.TabPanelLayout( 'options', {
-			label: ve.msg( 'math-visualeditor-mwlatexdialog-card-options' ),
+			label: ve.msg( 'visualeditor-mwdrawio-tabtitle-options' ),
+			classes: [ 'DrawioEditorFieldTest' ],
 			padded: true
 	} );
 
@@ -144,9 +145,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	] );
 
 
-	/* ******************************* START OF OPTIONS ******************************* */
-	/* ******************************* START OF OPTIONS ******************************* */
-	/* ******************************* START OF OPTIONS ******************************* */
+	/* ******************************* START OF OPTIONS TAB ******************************* */
+	/* ******************************* START OF OPTIONS TAB ******************************* */
+	/* ******************************* START OF OPTIONS TAB ******************************* */
 
 	/* GitHub README.md
 	 * 	https://github.com/wikimedia/mediawiki-extensions-DrawioEditor/blob/master/README.md#usage
@@ -254,28 +255,37 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     // FIXME: Selec the enable/disable based on tag values
 
 
-    /* ******************************* SART OF EDITOR ******************************* */
-    /* ******************************* SART OF EDITOR ******************************* */
-    /* ******************************* SART OF EDITOR ******************************* */
+    /* ******************************* START OF EDITOR TAB ******************************* */
+    /* ******************************* START OF EDITOR TAB ******************************* */
+	/* ******************************* START OF EDITOR TAB ******************************* */
+
+	// Filename input
+	this.idInput = new OO.ui.TextInputWidget();
+	idField = new OO.ui.FieldLayout( this.idInput, {
+		align: 'left',
+		classes: [ 'DrawioEditorFieldTest' ],
+		label: ve.msg( 'visualeditor-mwdrawio-filename' )
+	} );
+
+
+
     // URL is going to be set later during setup
     var url = 'about:blank';
 
     var panel2 = $( '<iframe source="'+url+'">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
     panel2.attr('id', 'DrawIOContainer');
     panel2.css( {'border':'1px solid black', 'border-radius': '5px'});
-    panel2.height( '80%' );
-    panel2.width( '80%' );
-	panel = new OO.ui.PanelLayout( {
-		padded: true,
-		expanded: false
-	} );
-	panel.$element.append(
-    );
+    panel2.height( '100%' );
+	panel2.width( '100%' );
 
+	var panel3 =$( '<div>' );
+	panel3.append( panel2 );
+    panel3.height( '80%' );
+	panel3.width( '80%' );
 
-    /* ******************************* SART OF LAYOUT ******************************* */
-    /* ******************************* SART OF LAYOUT ******************************* */
-    /* ******************************* SART OF LAYOUT ******************************* */
+    /* ******************************* START OF LAYOUT ******************************* */
+    /* ******************************* START OF LAYOUT ******************************* */
+    /* ******************************* START OF LAYOUT ******************************* */
 
     optionsTabPanel.$element.append(
         this.dimensionsField.$element,
@@ -284,7 +294,9 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
     );
 
     diagramTabPanel.$element.append(
-        panel2
+		idField.$element,
+		// panel2
+		panel3
     );
 
 
