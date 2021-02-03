@@ -109,7 +109,7 @@
 	},
 	"config": {
 		"DrawioEditorBaseURL": {
-			"value": "http://localhost/drawio.git/src/main/webapp/",
+			"value": "http://localhost/Projects/mediawiki/mediawiki-1.35.0/extensions/drawio/src/main/webapp/",
 			"description": "URL to the DrawIO webapp"
 		},
 		"DrawioEditorImageType": {

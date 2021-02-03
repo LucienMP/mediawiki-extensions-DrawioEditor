@@ -432,6 +432,26 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 	if(this.editor) {
 		this.editor.saveCallback();
 	}
+
+	// check here if filename value is present in mwdata i.e. if insert or edit
+	var filename = 'ChartName5';
+	if(mwData.attrs.filename == undefined) {
+		// check if input has value
+		var enterd_filename = document.getElementsByClassName('oo-ui-inputWidget-input')[0].value;
+		if(enterd_filename !== '' && enterd_filename !== 'undefined') {
+			filename = enterd_filename;
+		}
+	} else {
+		filename = mwData.attrs.filename;
+	}
+	mwData.attrs.filename = filename;
+
+	if(mwData.attrs.type == undefined) {
+		mwData.attrs.type = 'png';
+	}
+
+	// check here if filename value is present in mwdata i.e. if insert or edit
+
 	var center, scaled, latitude, longitude, zoom,
 		dimensions = // this.scalable.getBoundedDimensions(
 			this.dimensions.getDimensions()
@@ -455,8 +475,8 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 
 	// if ( !( this.selectedNode instanceof ve.dm.MWDrawIOTransclusionNode2 ) ) 
 	{
-//		mwData.attrs.width = dimensions.width.toString();
-//		mwData.attrs.height = dimensions.height.toString();
+		//		mwData.attrs.width = dimensions.width.toString();
+		//		mwData.attrs.height = dimensions.height.toString();
 
 	    if( isSelected ) {
 			// LMP: Case of just freshly un-selecting the wrap button, this is null - default to left
@@ -465,7 +485,6 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 			if( selected === null ) selected=this.alignWidget.selectItemByData( 'left' );
 
 			mwData.attrs.align = selected.getData();
-
 			// XXX
 			debugger;
 	    }
@@ -544,8 +563,8 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getSetupProcess = function ( data )
 				mwAttrs = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
 
 
-// FIXME> DrawIO handling should go here
-//			this.input.clearUndoStack();
+	// FIXME> DrawIO handling should go here
+	//			this.input.clearUndoStack();
 
 			this.actions.setMode( this.selectedNode ? 'edit' : 'insert' );
 

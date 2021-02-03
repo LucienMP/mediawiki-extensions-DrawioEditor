@@ -133,7 +133,12 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = async function () {
 
 	if ( requiresInteractive ) {
 		if ( !this.map && this.getRoot() ) {
-			this.setupMap();
+			var that_this = this;
+			// this.setupMap();
+			setTimeout(function(){ 
+				that_this.setupMap(); 
+			}, 500);
+			// setTimeout(this.setupMap(), 20000);
 			/* LMP-FIXME
 			mw.loader.using( [
 				'ext.kartographer.box',
@@ -143,31 +148,9 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = async function () {
 		} else if ( this.map ) {
 			// update image src in image
 				var mwData = this.model.getAttribute( 'mw' );
-				// var filename = mwData.attrs.filename;
-    			// var type = mwData.attrs.type;
-
-    // 			var params = {
-				// 	action: 'query',
-				// 	format: 'json',
-				// 	prop: 'imageinfo',
-				// 	titles: 'File:'+filename+'.drawio.'+type,
-				// 	iiprop: [ 'timestamp', 'user', 'url' ]
-				// },
-				// api = new mw.Api();
 
 			    var src = "";
 			    var src_time = "";
-
-				// await api.get( params ).done( function ( data ) {
-				// 	var pages = data.query.pages,
-				// 		p;
-				// 	for ( p in pages ) {
-				// 		src = pages[ p ].imageinfo[0].url;
-				// 		// src_time = pages[ p ].imageinfo[0].url+ '?ts=' + pages[ p ].imageinfo[0].timestamp;
-				// 		var timestamp = new Date().getTime();
-				// 		src_time = pages[ p ].imageinfo[0].url+ '?ts=' + timestamp;
-				// 	}
-				// } );
 
 				await this.callImageApi(mwData).then( function ( data ) {
     				src = data;
@@ -244,7 +227,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     	var timestamp = new Date().getTime();
     	src_time = src+ '?ts=' + timestamp;
     });
-	
+	console.log("src_time",src_time);
     var title = "drawio: "+filename;
 
     this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );
@@ -288,7 +271,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.callImageApi = async function (mwData
     var type = mwData.attrs.type;
     
     var src = "";
-
+    
 	var params = {
 		action: 'query',
 		format: 'json',

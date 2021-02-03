@@ -15,7 +15,7 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
     } else if (this.imgType == 'png') {
         this.imgMimeType = 'image/png';
     } else {
-        throw new Error('unkown file type');
+        throw new Error('unknown file type');
     }
 
     this.imageBox = $("#drawio-img-box-" + id);
@@ -188,14 +188,16 @@ DrawioEditor.prototype.loadImageFromDataURL = function(type, dataurl) {
 }
 
 DrawioEditor.prototype.loadImage = function() {
-    if (!this.imageURL.length) {
+    // if (!this.imageURL.length) {
+    if (this.imageURL == undefined) {
         // just load without data if there's no current image
         this.sendMsgToIframe(
             {
                 action: 'load',
                 autosave: 1     // FIXME: LMP: Causes update event notification on every change
             });
-	return;
+        this.hideSpinner();
+	    return;
     }
     // fetch image from wiki. it must contain both image data and
     // draw.io xml data. see DrawioEditor.saveCallback()
@@ -203,11 +205,16 @@ DrawioEditor.prototype.loadImage = function() {
 }
  
 DrawioEditor.prototype.uploadToWiki = function(blob) {
+    var enterd_filename = document.getElementsByClassName('oo-ui-inputWidget-input')[0].value;
+    if(this.filename == 'ChartName5' && (enterd_filename != '' && enterd_filename != this.filename)) {
+        this.filename = enterd_filename;
+    }
     var that = this;
 	var api = new mw.Api();
     api.upload(blob, { filename: this.filename+'.drawio.png', ignorewarnings: 1, format: 'json' } )
         .done( function(data) {
-			if (!data.upload) {
+			console.log("done");
+            if (!data.upload) {
 				if (data.error) {
 						that.showDialog('Save failed',
 				   'The wiki returned the follwing error when uploading:<br>' +
@@ -225,6 +232,7 @@ DrawioEditor.prototype.uploadToWiki = function(blob) {
 			}
         })
 		.fail( function(retStatus, data) {
+            console.log("error");
             if( retStatus == "exists" ){
 				that.updateImage(data.upload.imageinfo);
 				that.hideSpinner();
