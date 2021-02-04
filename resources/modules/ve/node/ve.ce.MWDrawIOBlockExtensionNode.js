@@ -135,9 +135,15 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.update = async function () {
 		if ( !this.map && this.getRoot() ) {
 			var that_this = this;
 			// this.setupMap();
-			setTimeout(function(){ 
-				that_this.setupMap(); 
-			}, 500);
+			var is_new_chart = localStorage.getItem("insertNewChart");
+			if((is_new_chart != '' || is_new_chart != undefined) && is_new_chart == 'yes') {
+				setTimeout(function(){ 
+					that_this.setupMap(); 
+					localStorage.removeItem("insertNewChart");
+				}, 500);
+			} else {
+				this.setupMap();
+			}
 			// setTimeout(this.setupMap(), 20000);
 			/* LMP-FIXME
 			mw.loader.using( [
@@ -227,7 +233,6 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     	var timestamp = new Date().getTime();
     	src_time = src+ '?ts=' + timestamp;
     });
-	console.log("src_time",src_time);
     var title = "drawio: "+filename;
 
     this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );

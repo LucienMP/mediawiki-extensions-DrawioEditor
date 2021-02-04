@@ -516,6 +516,8 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
 
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
     console.log("this.editor getreadyprocess",this.editor);
+
+    document.getElementsByClassName('oo-ui-inputWidget-input')[0].value = filename;
     // OK:
     // FIXME: Is there a better way to do this using OO.ui?
     //document.getElementById('DrawIOContainer').src="https://embed.diagrams.net/?embed=1&saveAndExit=0&noExitBtn=1&noSaveBtn=1&ui=atlas&spin=1&modified=unsavedChanges&proto=json";
@@ -567,6 +569,11 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getSetupProcess = function ( data )
 	//			this.input.clearUndoStack();
 
 			this.actions.setMode( this.selectedNode ? 'edit' : 'insert' );
+
+			if(!this.selectedNode) {
+				// console.log("insert a new node");
+				localStorage.setItem("insertNewChart", "yes");
+			}
 
 			if ( this.selectedNode && !inline ) {
 				//this.scalable = this.selectedNode.getScalable();

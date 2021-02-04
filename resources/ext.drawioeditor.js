@@ -31,10 +31,10 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
     this.iframeBox = $("#drawio-iframe-box-" + id);
     this.iframeBox.resizable({
         "handles": "s",
-	"distance": 0,
-	start: function(event, ui) {
+	    "distance": 0,
+    	start: function(event, ui) {
             that.showOverlay();
-	},
+    	},
         stop: function(event, ui) {
             $(this).css("width", '');
             that.hideOverlay();
@@ -213,7 +213,6 @@ DrawioEditor.prototype.uploadToWiki = function(blob) {
 	var api = new mw.Api();
     api.upload(blob, { filename: this.filename+'.drawio.png', ignorewarnings: 1, format: 'json' } )
         .done( function(data) {
-			console.log("done");
             if (!data.upload) {
 				if (data.error) {
 						that.showDialog('Save failed',
@@ -232,7 +231,6 @@ DrawioEditor.prototype.uploadToWiki = function(blob) {
 			}
         })
 		.fail( function(retStatus, data) {
-            console.log("error");
             if( retStatus == "exists" ){
 				that.updateImage(data.upload.imageinfo);
 				that.hideSpinner();
