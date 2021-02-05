@@ -204,6 +204,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
 		mwAttrs = mwData && mwData.attrs,
         node = this;
         debugger;
+       console.log("mwData",mwData);
 	/*
 	this.map = mw.loader.require( 'ext.kartographer.box' ).map( {
 		container: this.$element[ 0 ],
@@ -216,9 +217,12 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
   	var geoJson = ""; // FIXME:HACK>Doesnt exist> mwData && mwData.body.extsrc;
 
   	// Container that allows for DrawIO Scaling to certain size
-  	var scaledcontainer2 = $( '<div>' ) ;
+  	var scaledcontainer2 = $( '<div width="390" height="430">' ) ;
 	scaledcontainer2.addClass('drawio-scaled-container');
 	scaledcontainer2.appendTo( this.$element[ 0 ] ) ;
+	// check if container height is set as image height and width
+	// scaledcontainer2.setAttribute('width',390);
+	// scaledcontainer2.setAttribute('height',430);
 	scaledcontainer2.css({'height':'100%', 'width': '100%'});
 
     // Add DrawIO to VE container
@@ -235,7 +239,10 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     });
     var title = "drawio: "+filename;
 
-    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%; max-width: 371px;"></img>' );
+    var height = mwData.attrs.height ? 'auto' : 'auto';
+    var width = mwData.attrs.width ? '100%' : '100%';
+
+    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%;"></img>' );
     
 	this.$wavedromdiv.appendTo( scaledcontainer2 ) ;
 	$( '<div id=WaveDrom_Display_9998>' ).appendTo( scaledcontainer2 ); // LMP-FIXME: Needs to be something more concrete, there could be 9998 waves on a page
@@ -388,7 +395,6 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.onResizableResizing = function () {
 	if ( false ) { //FIXME:LMP:  Removed> !this.requiresInteractive() ) {
 		this.updateStatic( 1000, 1000 );
 	} else if ( true /*this.map*/ ) {
-
 	    debugger;
 
 		// LMP-FIXME : this.map.invalidateSize();
@@ -409,7 +415,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.getAttributeChanges = function ( widt
 
     console.log( width);
     console.log( height);
-    console.log( mwData );
+    // console.log( mwData );
     console.log( mwData.attrs ); // FIXME: attrs is underfined, why?
 
     console.log("END VeCeMWDrawIOBlockExtensionNode.getAttributeChanges #################################################"  );

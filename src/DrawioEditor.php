@@ -223,7 +223,7 @@ class DrawioEditor {
 			$opt_max_width === 'chart' ? 'true' : 'false' );
 
 			// LMP>FIXME
-			$img_style = sprintf( 'height: %s; width: %s; max-width: %s;',
+			$img_style = sprintf( 'height: %s; width: %s;',
 			$css_img_height, $css_img_width, $css_img_max_width );
 
 		/* output begin */
@@ -245,7 +245,7 @@ class DrawioEditor {
 		}
 
 		/* prepare image */
-		$img_style = sprintf( 'height: %s; width: %s; max-width: %s;',
+		$img_style = sprintf( 'height: %s; width: %s;',
 			$css_img_height, $css_img_width, $css_img_max_width );
 		if ( !$img ) {
 			$img_style .= ' display:none;';
