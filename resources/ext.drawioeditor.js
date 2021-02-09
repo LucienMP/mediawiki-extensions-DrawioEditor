@@ -1,7 +1,6 @@
 
 function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth, isEDITLinkVersion=false) {
     var that = this;
-    
     this.id = id;
     this.filename = filename;
     this.imgType = type;
@@ -47,10 +46,28 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
  
     /* FIXME:LMP This code depends on the iframe being EDIT link, or VE editor */
     //isEDITLinkVersion=false;
+    // console.log("this.imageHref", this.imageHref);
 
     if( isEDITLinkVersion ) {
+        var url = mw.config.get( 'wgDrawioEditorBaseURL' ) + "?" ;
+        //alert("some url:"+url);
+        url = url + "&embed=1";
+        url = url + "&proto=json";
+
+        // Enable development javascript
+        url = url + "&dev=1";
+
+        // Skin; dark, atlas, min
+        url = url + "&ui=atlas";
+
+        // Disable buttons, and menu for saving/exiting
+        url = url + "&saveAndExit=1&noExitBtn=0&noSaveBtn=0";
+
+        // Start with spinner
+        url = url + "&spin=1&modified=unsavedChanges";
+        // prev src = 'https://embed.diagrams.net/?embed=1&proto=json&spin=1&analytics=0&db=0&gapi=0&od=0&picker=0'
         this.iframe = $('<iframe>', {
-            src: 'https://embed.diagrams.net/?embed=1&proto=json&spin=1&analytics=0&db=0&gapi=0&od=0&picker=0',
+            src: url,
         id: 'drawio-iframe-' + id,
         class: 'DrawioEditorIframe'
         })
@@ -62,6 +79,13 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
 
     this.iframeWindow = this.iframe.prop('contentWindow');
 
+    if(isEDITLinkVersion) {
+        // this.initCallback();
+        // this.sendMsgToIframe({ action: 'init'});
+        this.sendMsgToIframe({
+            'action': 'init',
+        });
+    }
     this.show();
 }
 
@@ -72,6 +96,7 @@ DrawioEditor.prototype.destroy = function() {
 DrawioEditor.prototype.show = function() {
     this.imageBox.hide();
     this.iframeBox.height(Math.max(this.imageBox.height()+100, 800));
+    this.iframeBox.width(1000);
     this.iframeBox.show();
 }
 
@@ -205,9 +230,11 @@ DrawioEditor.prototype.loadImage = function() {
 }
  
 DrawioEditor.prototype.uploadToWiki = function(blob) {
-    var enterd_filename = document.getElementsByClassName('oo-ui-inputWidget-input')[0].value;
-    if(this.filename == 'ChartName5' && (enterd_filename != '' && enterd_filename != this.filename)) {
-        this.filename = enterd_filename;
+    if(document.getElementsByClassName('oo-ui-inputWidget-input').length > 0) {
+        var enterd_filename = document.getElementsByClassName('oo-ui-inputWidget-input')[0].value;
+        if(this.filename == 'ChartName5' && (enterd_filename != '' && enterd_filename != this.filename)) {
+            this.filename = enterd_filename;
+        }
     }
     var that = this;
 	var api = new mw.Api();
@@ -310,59 +337,118 @@ DrawioEditor.prototype.initCallback = function () {
 
 
 var editor;
+// var this_use = this;
 
 window.editDrawio = function(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth) {
     debugger;
-
     //FIXME: Added only on edit
     window.addEventListener('message', drawioHandleMessage);
 
     if (!editor) {
         editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth, true);
+        // this_use.hideSpinner();
     } else {
         alert("Only one DrawioEditor can be open at the same time!");
     }
 };
 
+// function drawioHandleMessageOld(e) {
+//     debugger;
+
+//     // we only act on event coming from draw.io iframes
+//     // if (e.origin != 'https://embed.diagrams.net')
+//     //     return;
+
+//     if (!editor)
+//         return;
+
+//     evdata = JSON.parse(e.data);
+
+//     switch(evdata['event']) {
+//         case 'init':
+//             editor.initCallback();
+//             break;
+
+//         case 'load':
+//             break;
+
+//         case 'save':
+//             editor.saveCallback();
+//             break;
+
+//         case 'export':
+//             editor.exportCallback(evdata['format'], evdata['data']);
+//             break;
+
+//         case 'exit':
+//             editor.exitCallback();
+//             // editor is null after this callback
+
+//             // FIXME: Remove event handler
+//             window.removeEventListener('message',drawioHandleMessage);
+//             break;
+
+//         default:
+//             alert('Received unknown event from drawio iframe: ' + evdata['event']);
+//     }
+// };
+
 function drawioHandleMessage(e) {
+    var date = new Date();
+    evdata = JSON.parse(e.data);
+    console.log( date.toLocaleTimeString() + "drawioHandleMessage: [" + evdata['event'] + "]" );
     debugger;
 
+    // FIXME:LMP:Extract original event from jquery wrapper
+    // e = eJqueryEvent.originalEvent;
+
+    // FIXME: LMP: Disable for debugging of local diagrams.net
+    /*
     // we only act on event coming from draw.io iframes
     if (e.origin != 'https://embed.diagrams.net')
         return;
-
-    if (!editor)
+    */
+    if (!this.editor)
         return;
 
     evdata = JSON.parse(e.data);
 
     switch(evdata['event']) {
         case 'init':
-            editor.initCallback();
+            this.editor.initCallback();
             break;
 
         case 'load':
             break;
 
         case 'save':
-            editor.saveCallback();
+            this.editor.saveCallback();
             break;
 
         case 'export':
-            editor.exportCallback(evdata['format'], evdata['data']);
+            this.editor.exportCallback(evdata['format'], evdata['data']);
+            
             break;
 
         case 'exit':
-            editor.exitCallback();
+            this.editor.exitCallback();
+            this.editor.hide();
             // editor is null after this callback
+            break;
 
-            // FIXME: Remove event handler
-            window.removeEventListener('message',drawioHandleMessage);
+        case 'openLink':
+            // Help>About
+            break;
+
+        case 'autosave':
+        // this.actions.setAbilities( { done: true } );
+            this.editor.saveCallback();
+            // FIXME: Update and set the MW apply button chages here
             break;
 
         default:
             alert('Received unknown event from drawio iframe: ' + evdata['event']);
     }
-};
+}
 
 //FIXME: LMP; moved to editDrawio; window.addEventListener('message', drawioHandleMessage);

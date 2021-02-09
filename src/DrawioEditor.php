@@ -215,7 +215,7 @@ class DrawioEditor {
 		/* prepare edit href */
 		$edit_ahref = sprintf( "<a href='javascript:editDrawio(\"%s\", %s, \"%s\", %s, %s, %s, %s)'>",
 			$id,
-			json_encode( $img_name, JSON_HEX_QUOT | JSON_HEX_APOS ),
+			json_encode( $name, JSON_HEX_QUOT | JSON_HEX_APOS ),
 			$opt_type,
 			$opt_interactive ? 'true' : 'false',
 			$opt_height === 'chart' ? 'true' : 'false',
