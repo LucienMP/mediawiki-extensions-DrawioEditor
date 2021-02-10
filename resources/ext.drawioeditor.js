@@ -61,7 +61,7 @@ function DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth
         url = url + "&ui=atlas";
 
         // Disable buttons, and menu for saving/exiting
-        url = url + "&saveAndExit=1&noExitBtn=0&noSaveBtn=0";
+        url = url + "&saveAndExit=0&noExitBtn=0&noSaveBtn=0";
 
         // Start with spinner
         url = url + "&spin=1&modified=unsavedChanges";
@@ -236,9 +236,13 @@ DrawioEditor.prototype.uploadToWiki = function(blob) {
             this.filename = enterd_filename;
         }
     }
+    var type = 'png';
+    if(this.imgType) {
+        type = this.imgType;
+    }
     var that = this;
 	var api = new mw.Api();
-    api.upload(blob, { filename: this.filename+'.drawio.png', ignorewarnings: 1, format: 'json' } )
+    api.upload(blob, { filename: this.filename+'.drawio.'+type, ignorewarnings: 1, format: 'json' } )
         .done( function(data) {
             if (!data.upload) {
 				if (data.error) {
@@ -427,12 +431,11 @@ function drawioHandleMessage(e) {
 
         case 'export':
             this.editor.exportCallback(evdata['format'], evdata['data']);
-            
             break;
 
         case 'exit':
             this.editor.exitCallback();
-            this.editor.hide();
+            // this.editor.hide();
             // editor is null after this callback
             break;
 
