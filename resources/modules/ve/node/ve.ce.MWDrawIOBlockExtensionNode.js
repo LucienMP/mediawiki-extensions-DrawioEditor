@@ -16,7 +16,6 @@
  */
 ve.ce.MWDrawIOBlockExtensionNode = function VeCeMWDrawIOBlockExtensionNode( model, config ) {
 	config = config || {};
-
 	// Parent constructor
 	ve.ce.MWDrawIOBlockExtensionNode.super.apply( this, arguments );
 
@@ -228,7 +227,8 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     // Add DrawIO to VE container
     // FIXME:LMP: This is hardcoded to my example ChartName5.drawio.png as an example
     var filename = mwData.attrs.filename;
-    var type = mwData.attrs.type;
+    // console.log("DrawioEditorImageType",mw.config.get( 'DrawioEditorImageType' ));
+    var type = mwData.attrs.type ? mwData.attrs.type : mw.config.get( 'DrawioEditorImageType' );
     
     var src = "";
     var src_time = "";
@@ -280,7 +280,7 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
 
 ve.ce.MWDrawIOBlockExtensionNode.prototype.callImageApi = async function (mwData) {
 	var filename = mwData.attrs.filename;
-    var type = mwData.attrs.type;
+    var type = mwData.attrs.type ? mwData.attrs.type : mw.config.get( 'DrawioEditorImageType' );
     
     var src = "";
     

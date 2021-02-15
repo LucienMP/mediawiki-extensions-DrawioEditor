@@ -223,8 +223,13 @@ class DrawioEditor {
 			$opt_max_width === 'chart' ? 'true' : 'false' );
 
 			// LMP>FIXME
-			$img_style = sprintf( 'height: %s; width: %s;',
-			$css_img_height, $css_img_width, $css_img_max_width );
+			if($css_img_width != '100%') {
+				$img_style = sprintf( 'height: %s; width: %s;',
+				$css_img_height, $css_img_width, $css_img_max_width );
+			} else {
+				$img_style = sprintf( 'height: %s; width: %s; max-width: %s;',
+				$css_img_height, $css_img_width, $css_img_max_width );
+			}
 
 		/* output begin */
 		$output = '<div class="drawio-container" style="'.$img_style.'">';
@@ -245,8 +250,13 @@ class DrawioEditor {
 		}
 
 		/* prepare image */
-		$img_style = sprintf( 'height: %s; width: %s;',
+		if($css_img_width != '100%') {
+			$img_style = sprintf( 'height: %s; width: %s;',
 			$css_img_height, $css_img_width, $css_img_max_width );
+		} else {
+			$img_style = sprintf( 'height: %s; width: %s; max-width: %s;',
+			$css_img_height, $css_img_width, $css_img_max_width );
+		}	
 		if ( !$img ) {
 			$img_style .= ' display:none;';
 		}

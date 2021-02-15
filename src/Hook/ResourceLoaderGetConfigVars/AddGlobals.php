@@ -16,7 +16,9 @@ class AddGlobals {
 
 		// Get the base URL
 		$limit = $config->get( 'DrawioEditorBaseURL' );
+		$img_required_type = $config->get( 'DrawioEditorImageType' );
 		$vars['wgDrawioEditorBaseURL'] = $limit;
+		$vars['DrawioEditorImageType'] = $img_required_type;
 /* FIXME: set this to check if the configuration is missing
 		if ( $limit ... ) {
 				throw new \RuntimeException(

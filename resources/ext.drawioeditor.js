@@ -444,7 +444,7 @@ function drawioHandleMessage(e) {
             break;
 
         case 'autosave':
-        // this.actions.setAbilities( { done: true } );
+            // this.actions.setAbilities( { done: true } );
             this.editor.saveCallback();
             // FIXME: Update and set the MW apply button chages here
             break;

@@ -447,7 +447,8 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 	mwData.attrs.filename = filename;
 
 	if(mwData.attrs.type == undefined) {
-		mwData.attrs.type = 'png';
+		// mwData.attrs.type = 'png';
+		mwData.attrs.type = mw.config.get( 'DrawioEditorImageType' );
 	}
 
 	// check here if filename value is present in mwdata i.e. if insert or edit
@@ -512,7 +513,7 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
     //$('#ve-ui-mwWavedromDialog-waveWidget').src = "" ;
     //$('#DrawIOContainer').src = "https://...." ;
     var mwData = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
-    var id=775430669, filename=mwData.filename ? mwData.filename : 'ChartName5', type=mwData.type ? mwData.type : 'png', interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    var id=775430669, filename=mwData.filename ? mwData.filename : 'ChartName5', type=mwData.type ? mwData.type : mw.config.get( 'DrawioEditorImageType' ), interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
 
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
     console.log("this.editor getreadyprocess",this.editor);
