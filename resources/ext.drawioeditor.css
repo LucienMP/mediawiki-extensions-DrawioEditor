@@ -28,3 +28,32 @@
   background-color: rgba(1, 1, 1, 0.1);
   max-width: 60em;
 }
+
+/*New css for showing input text error start*/
+
+.DrawioEditorFieldInput {
+  max-width: 60em;
+}
+
+.oo-ui-messageWidget > .oo-ui-labelElement-label {
+  margin-left:0 !important;
+}
+
+.oo-ui-fieldLayout-messages > .oo-ui-messageWidget {
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+.oo-ui-fieldLayout-messages > .oo-ui-messageWidget:first-child {
+  margin-top:0 !important;
+}
+
+.oo-ui-messageWidget {
+  position:static !important;
+}
+
+.oo-ui-image-error {
+  margin-top:20px !important;
+}
+
+/*New css for showing input text error end*/

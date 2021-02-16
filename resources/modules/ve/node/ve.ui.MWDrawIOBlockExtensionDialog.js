@@ -263,18 +263,17 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.initialize = function () {
 	this.idInput = new OO.ui.TextInputWidget();
 	idField = new OO.ui.FieldLayout( this.idInput, {
 		align: 'left',
-		classes: [ 'DrawioEditorFieldTest' ],
-		label: ve.msg( 'visualeditor-mwdrawio-filename' )
+		classes: [ 'DrawioEditorFieldInput' ],
+		label: ve.msg( 'visualeditor-mwdrawio-filename' ),
+		errors: [ 'This field is required' ]
 	} );
-
-
 
     // URL is going to be set later during setup
     var url = 'about:blank';
 
     var panel2 = $( '<iframe source="'+url+'">' ).addClass( 've-ui-mwWavedromDialog-waveWidget' );
     panel2.attr('id', 'DrawIOContainer');
-    panel2.css( {'border':'1px solid black', 'border-radius': '5px'});
+    panel2.css( {'border':'1px solid black', 'border-radius': '5px'} );
     panel2.height( '100%' );
 	panel2.width( '100%' );
 
@@ -429,17 +428,26 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.updateMwData = function ( mwData ) 
 	 * mwData.attrs updated results in "Apply Changes"
 	 *
 	 */
+
 	if(this.editor) {
+		var input_val = document.getElementsByClassName('oo-ui-inputWidget-input')[0].value;
+		if(input_val == '' || input_val == undefined) {
+			alert("Please add a name in the input field.");
+			return false;
+		}
 		this.editor.saveCallback();
 	}
-
 	// check here if filename value is present in mwdata i.e. if insert or edit
-	var filename = 'ChartName5';
+	// var filename = 'ChartName5';
+	var filename = '';
 	if(mwData.attrs.filename == undefined) {
 		// check if input has value
 		var enterd_filename = document.getElementsByClassName('oo-ui-inputWidget-input')[0].value;
 		if(enterd_filename !== '' && enterd_filename !== 'undefined') {
 			filename = enterd_filename;
+		} else {
+			// alert("please enter a filename input field.");
+			// return false;
 		}
 	} else {
 		filename = mwData.attrs.filename;
@@ -513,7 +521,7 @@ ve.ui.MWDrawIOBlockExtensionDialog.prototype.getReadyProcess = function ( data )
     //$('#ve-ui-mwWavedromDialog-waveWidget').src = "" ;
     //$('#DrawIOContainer').src = "https://...." ;
     var mwData = this.selectedNode && this.selectedNode.getAttribute( 'mw' ).attrs || {};
-    var id=775430669, filename=mwData.filename ? mwData.filename : 'ChartName5', type=mwData.type ? mwData.type : mw.config.get( 'DrawioEditorImageType' ), interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
+    var id=775430669, filename=mwData.filename ? mwData.filename : '', type=mwData.type ? mwData.type : mw.config.get( 'DrawioEditorImageType' ), interactive=0, updateHeight=100, updateWidth=100, updateMaxWidth=100;
 
     this.editor = new DrawioEditor(id, filename, type, interactive, updateHeight, updateWidth, updateMaxWidth);
     console.log("this.editor getreadyprocess",this.editor);

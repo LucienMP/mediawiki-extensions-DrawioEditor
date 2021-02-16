@@ -227,26 +227,28 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.setupMap = async function () {
     // Add DrawIO to VE container
     // FIXME:LMP: This is hardcoded to my example ChartName5.drawio.png as an example
     var filename = mwData.attrs.filename;
-    // console.log("DrawioEditorImageType",mw.config.get( 'DrawioEditorImageType' ));
     var type = mwData.attrs.type ? mwData.attrs.type : mw.config.get( 'DrawioEditorImageType' );
-    
-    var src = "";
-    var src_time = "";
-    await this.callImageApi(mwData).then( function ( data ) {
-    	src = data;
-    	var timestamp = new Date().getTime();
-    	src_time = src+ '?ts=' + timestamp;
-    });
-    var title = "drawio: "+filename;
-
     var height = mwData.attrs.height ? 'auto' : 'auto';
     var width = mwData.attrs.width ? '100%' : '100%';
+    
+    if(filename == undefined || filename == '') {
+    	this.$wavedromdiv=$( '<div id="drawio-img-775430669" style="height: auto; width: 100%;">DrawioEditor Usage Error:<br> filename Tag is missing</div>' );
+    } else {
+    	var src = "";
+	    var src_time = "";
+	    await this.callImageApi(mwData).then( function ( data ) {
+	    	src = data;
+	    	var timestamp = new Date().getTime();
+	    	src_time = src+ '?ts=' + timestamp;
+	    });
+	    var title = "drawio: "+filename;
 
-    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%;"></img>' );
+	    this.$wavedromdiv=$( '<img id="drawio-img-775430669" src="'+src_time+'" title="'+title+'" alt="'+title+'" style="height: auto; width: 100%;"></img>' );
+    }
+    // console.log("DrawioEditorImageType",mw.config.get( 'DrawioEditorImageType' ));
     
 	this.$wavedromdiv.appendTo( scaledcontainer2 ) ;
 	$( '<div id=WaveDrom_Display_9998>' ).appendTo( scaledcontainer2 ); // LMP-FIXME: Needs to be something more concrete, there could be 9998 waves on a page
-    
 
 	this.map = this.$wavedromdiv;
 
@@ -310,11 +312,14 @@ ve.ce.MWDrawIOBlockExtensionNode.prototype.callImageApi = async function (mwData
 ve.ce.MWDrawIOBlockExtensionNode.prototype.updateGeoJson = function () {
 	var mwData = this.model.getAttribute( 'mw' ),
 		geoJson = "";
-
 	if ( geoJson !== this.geoJson ) {
 		// LMP-FIXME : mw.loader.require( 'ext.kartographer.editing' ).updateKartographerLayer( this.map, mwData && mwData.body.extsrc ).then( this.updateMapPosition.bind( this ) );
 		this.geoJson = geoJson;
 		this.$wavedromdiv.text(geoJson);
+		if(mwData.attrs.filename == undefined || mwData.attrs.filename == '') {
+			var div = document.getElementById('drawio-img-775430669');
+			div.innerHTML += 'DrawioEditor Usage Error:<br> filename Tag is missing';
+		}
 		//alert(geoJson);
 		// WaveDrom.ProcessAll(); // LMP-FIXME
 		//WaveDrom.RenderWaveForm(9998, WaveDrom.eva('InputJSON_9998'), 'WaveDrom_Display_');

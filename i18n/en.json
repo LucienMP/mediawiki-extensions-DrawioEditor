@@ -24,7 +24,7 @@
 
 	"visualeditor-mwdrawio-tabtitle-edit": "Diagram Editor",
 	"visualeditor-mwdrawio-tabtitle-options": "Options",
-	"visualeditor-mwdrawio-filename": "chart filename",
+	"visualeditor-mwdrawio-filename": "Chart filename",
 
 	"visualeditor-mwdrawiocontextitem-nosupport": "This map contains dynamic features, and for now can only be edited in source mode.",
 	"visualeditor-mwdrawiocontextitem-title": "DrawIO Edit"
